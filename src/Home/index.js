@@ -15,7 +15,7 @@ const Home = () => {
           <Link href="https://github.com/MymmiJ/arango-rbac-php">PHP5 ArangoDB RBAC library</Link>
         ]}/>
         <DefinitionList header="Older Projects (Pre-2014)" entries={[
-          "Four-button writing in English",
+          <Link href="/Old/FourButton">Four-button writing in English</Link>,
           "Unfinished pixel-art navigation",
           <Link href="/Old/Clawrite">Simple 'Clawrite' Example</Link>,
           <Link href="https://www.kongregate.com/games/Jaywalker2/hard-beans">Flash Game 'Hard Beans'</Link>
@@ -50,7 +50,8 @@ const Home = () => {
           <Link href="https://mermaidsuk.org.uk/donate/">Mermaids UK</Link>,
           <Link href="https://www.msf.org/">Médecins Sans Frontières</Link>,
           <Link href="https://www.amnesty.org.uk/">Amnesty International</Link>,
-          <Link href="https://www.givewell.org/charities/sci-foundation">Schistosomiasis Foundation</Link>
+          <Link href="https://www.givewell.org/charities/sci-foundation">Schistosomiasis Foundation</Link>,
+          <Link href="https://lichess.org/patron">Lichess</Link>
         ]}/>
     </div>
 };

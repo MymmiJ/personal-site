@@ -63,7 +63,6 @@ const writeString = (context, input_array) => {
         } else {
             drawSymbol(context, input_array[i], size, symbol_size, row_number, length_to_width_ratio);
             cursor_location += (size * 2);
-            console.log(input_array[i], cursor_location);
         }
         ++i;
     }

@@ -1,10 +1,15 @@
 import { createMuiTheme } from '@material-ui/core/styles';
 
+const typography = {
+    fontFamily: 'Monospace',
+    lineHeight: '100%',
+    button: {
+        textTransform: 'none'
+    }
+};
+
 const dark_theme = createMuiTheme({
-    typography: {
-        fontFamily: 'Monospace',
-        lineHeight: '100%'
-    },
+    typography,
     palette: {
         type: "dark",
         primary: {
@@ -20,22 +25,19 @@ const dark_theme = createMuiTheme({
 });
 
 const light_theme = createMuiTheme({
-typography: {
-    fontFamily: 'Monospace',
-    lineHeight: '100%'
-},
-palette: {
-    type: "light",
-    primary: {
-    main: '#FF0000',
+    typography,
+    palette: {
+        type: "light",
+        primary: {
+        main: '#FF0000',
+        },
+        secondary: {
+        main: '#4646EF',
+        },
+        background: {
+        default: "#DFDFDF"
+        },
     },
-    secondary: {
-    main: '#4646EF',
-    },
-    background: {
-    default: "#DFDFDF"
-    },
-},
 });
 
 export { light_theme, dark_theme };

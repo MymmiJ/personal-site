@@ -12,6 +12,7 @@ import {
 import BrightnessSwitch from './Switches/BrightnessSwitch';
 import Home from './Home';
 import Clawrite from './Clawrite';
+import FourButtonEnglishText from './FourButtonEnglishText';
 
 function App() {
   const prefersLightMode = useMediaQuery('(prefers-color-scheme: light)')
@@ -23,12 +24,15 @@ function App() {
       <ThemeProvider theme={ theme }>
         <CssBaseline/>
         <header>
-          <Grid container alignItems="center" alignContent="center" justify="space-between">
+          <Grid container alignItems="center" alignContent="center" justify="space-around" spacing={0}>
             <Grid item><Link href="/"><h1>Projects By MymmiJ</h1></Link></Grid>
             <Grid item><BrightnessSwitch checked={ lightTheme } handleChange={ switchTheme } /></Grid>
           </Grid>
         </header>
         <Switch>
+          <Route path="/Old/FourButton">
+            <FourButtonEnglishText/>
+          </Route>
           <Route path="/Old/Clawrite">
             <Clawrite/>
           </Route>

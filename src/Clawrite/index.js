@@ -18,7 +18,7 @@ const Clawrite = () => {
 	    <p>This implementation of ClaWrite was written so that the basic letter construction method could be easily extended (to what end I am no longer sure!).</p>
 	    <p>The message printed below is a simple transliteration that reads "helloworld(th)".</p>
         <Canvas draw={ draw } height={ 400 } width={ 600 } />
-        <p><small>Originally this was written as a brief learning exercise, intending to use only IE6-comptaible JS (as was the style at the time) - where it has been updated, it's only so I could import it into this modern React project.</small></p>
+        <p><small>Originally this was written as a brief learning exercise, intending to use only IE6-compatible JS (as was the style at the time) - where it has been updated, it's only so I could import it into this more modern React project.</small></p>
     </div>;
 }
 
