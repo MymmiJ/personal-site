@@ -4,8 +4,8 @@ import DefinitionList from '../Lists/DefinitionList';
 const Home = () => {
     return <div>
         <DefinitionList header="Novelties" entries={[
-            "Antethesizer",
-            "Algorithm Bookclub"
+            <Link href="https://github.com/MymmiJ/antethesizer">Antethesizer</Link>,
+            "Algorithm Bookclub Demos [To Be Added]"
         ]}/>
         <DefinitionList header="Game Jam Entries" entries={[
           <Link href="https://mymmij.itch.io/mycorhizal">Mycorhizhal</Link>,
