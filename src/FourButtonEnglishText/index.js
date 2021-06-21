@@ -17,7 +17,7 @@ const FourButtonEnglishText = () => {
         }
     }
     const selectNextWord = () => {
-        if(word_number <= words.length) {
+        if(word_number < words.length) {
             setWordNumber(n => n+1);
         }
     }
