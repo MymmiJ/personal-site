@@ -4,14 +4,14 @@ import KeyboardArrowRightIcon from '@material-ui/icons/KeyboardArrowRight';
 import UpWord from "./UpWord";
 import './styles.css';
 
-const SelectedWord = ({ theWord, nextLeft, nextRight, previous, editing, left, right, up}) => {
+const SelectedWord = ({ theWord, nextLeft, nextRight, previous, editing, left, right, up, down}) => {
     const color = editing ? 'secondary' : 'primary';
     const invColor = editing ? 'primary' : 'secondary';
     return editing ?
         <span><Button variant="contained" color={invColor} onClick={left}>{nextLeft}<KeyboardArrowLeftIcon/></Button>
-            <Button className="Below" variant="contained" color={color}>{theWord}<UpWord color={invColor} upWord={previous} onClick={up}/></Button>
+            <Button className="Below" variant="contained" color={color} onClick={down}>{theWord}<UpWord color={invColor} upWord={previous} onClick={up}/></Button>
         <Button variant="contained" color={invColor} onClick={right}><KeyboardArrowRightIcon/>{nextRight}</Button></span> :
-        <span><Button variant="contained" color={color}>{theWord}</Button></span>;
+        <span><Button variant="contained" color={color} onClick={down}>{theWord}</Button></span>;
 }
 
 export default SelectedWord;

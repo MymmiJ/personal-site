@@ -118,6 +118,7 @@ const FourButtonEnglishText = () => {
             left={ left }
             right={ right }
             up={ up }
+            down={ down }
             selected={ word_number === i }
             select_mode={ select_mode }
             word_number={ i }
