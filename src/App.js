@@ -13,6 +13,7 @@ import BrightnessSwitch from './Switches/BrightnessSwitch';
 import Home from './Home';
 import Clawrite from './Clawrite';
 import FourButtonEnglishText from './FourButtonEnglishText';
+import AlgorithmBookClub from './ABC';
 
 function App() {
   const prefersLightMode = useMediaQuery('(prefers-color-scheme: light)')
@@ -35,6 +36,9 @@ function App() {
           </Route>
           <Route path="/Old/Clawrite">
             <Clawrite/>
+          </Route>
+          <Route path="/ABC">
+            <AlgorithmBookClub/>
           </Route>
           <Route path="/">
             <Home/>

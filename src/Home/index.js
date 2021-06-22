@@ -5,7 +5,12 @@ const Home = () => {
     return <div>
         <DefinitionList header="Novelties" entries={[
             <Link href="https://github.com/MymmiJ/antethesizer">Antethesizer</Link>,
-            "Algorithm Bookclub Demos [To Be Added]"
+            "Dungeon Generator [To Be Added]",
+            <DefinitionList header="Algorithm Bookclub Demos" entries={[
+              <span>Diffusion Reaction Algorithm on a Sphere: <Link href="https://drive.google.com/file/d/1Z7faiROIxpw-1PjMh2zV_1SgY_42Dmtc/view?usp=sharing">Mac OS</Link></span>,
+              <span>Visualising Maze Generation: <Link href="https://drive.google.com/file/d/1ZbfzBMowHVlbS26DDn30zi1SrbPJs0oF/view?usp=sharing">Mac OS</Link></span>,
+              <Link href="/ABC">Algorithm Book Club</Link>
+            ]}/>
         ]}/>
         <DefinitionList header="Game Jam Entries" entries={[
           <Link href="https://mymmij.itch.io/mycorhizal">Mycorhizhal</Link>,
@@ -16,7 +21,7 @@ const Home = () => {
         ]}/>
         <DefinitionList header="Older Projects (Pre-2014)" entries={[
           <Link href="/Old/FourButton">Four-button writing in English</Link>,
-          "Unfinished pixel-art navigation",
+          "Unfinished pixel-art navigation [To Be Added]",
           <Link href="/Old/Clawrite">Simple 'Clawrite' Example</Link>,
           <Link href="https://www.kongregate.com/games/Jaywalker2/hard-beans">Flash Game 'Hard Beans'</Link>
         ]}/>
