@@ -1,15 +1,51 @@
-import { Container } from '@material-ui/core';
+import { Box, Container, Card } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import DefinitionList from '../Lists/DefinitionList';
+import ReactionDiffusion from './Images/reaction-diffusion.png';
+import MazeVersions from './Images/maze-versions.png';
+import DungeonGenerator from './Images/dungeon-exploration.png';
+import Antethesizer from './Images/antethesizer.png';
 
 const Home = () => {
     return <Container>
         <DefinitionList header="Novelties" entries={[
             <Link href="https://github.com/MymmiJ/antethesizer">Antethesizer</Link>,
-            "Dungeon Generator [To Be Added]",
+            <Box display="inline-block">
+              <Card maxWidth="480px" width="480px">
+                <figure>
+                  <img width="400px" height="200px" src={Antethesizer} alt="A screenshot showing various music generating functionalities"/>
+                  <figcaption>Features of 'Antethesizer', a music-generating app</figcaption>
+                </figure>
+              </Card>
+            </Box>,
+            "Dungeon Generator [In development]",
+            <Box display="inline-block">
+              <Card maxWidth="480px" width="480px">
+                <figure>
+                  <img src={DungeonGenerator} alt="An opening screenshot of the AD&amp;D dungeon generator"/>
+                  <figcaption>An opening screenshot of the AD&amp;D dungeon generator</figcaption>
+                </figure>
+              </Card>
+            </Box>,
             <DefinitionList header="Algorithm Bookclub Demos" entries={[
               <span>Diffusion Reaction Algorithm on a Sphere: <Link href="https://drive.google.com/file/d/1Z7faiROIxpw-1PjMh2zV_1SgY_42Dmtc/view?usp=sharing">Mac OS</Link></span>,
+              <Box display="inline-block">
+                <Card maxWidth="480px" width="480px">
+                  <figure>
+                    <img src={ReactionDiffusion} alt="Demonstration of reaction-diffusion on a sphere"/>
+                    <figcaption>Reaction-Diffusion algorithm results</figcaption>
+                  </figure>
+                </Card>
+              </Box>,
               <span>Visualising Maze Generation: <Link href="https://drive.google.com/file/d/1ZbfzBMowHVlbS26DDn30zi1SrbPJs0oF/view?usp=sharing">Mac OS</Link></span>,
+              <Box display="inline-block">
+                <Card maxWidth="480px" width="480px">
+                  <figure>
+                    <img src={MazeVersions} alt="Visualisations of different maze generation algorithms"/>
+                    <figcaption>Various maze generation algorithms, visualised</figcaption>
+                  </figure>
+                </Card>
+              </Box>,
               <Link href="/ABC">Algorithm Book Club</Link>
             ]}/>
         ]}/>
