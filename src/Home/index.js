@@ -1,8 +1,9 @@
+import { Container } from '@material-ui/core';
 import Link from '@material-ui/core/Link';
 import DefinitionList from '../Lists/DefinitionList';
 
 const Home = () => {
-    return <div>
+    return <Container>
         <DefinitionList header="Novelties" entries={[
             <Link href="https://github.com/MymmiJ/antethesizer">Antethesizer</Link>,
             "Dungeon Generator [To Be Added]",
@@ -58,7 +59,7 @@ const Home = () => {
           <Link href="https://www.givewell.org/charities/sci-foundation">Schistosomiasis Foundation</Link>,
           <Link href="https://lichess.org/patron">Lichess</Link>
         ]}/>
-    </div>
+    </Container>
 };
 
 export default Home;
