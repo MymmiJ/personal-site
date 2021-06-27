@@ -1,8 +1,10 @@
 import { useState } from 'react';
-import { words as wordList } from './words-btree-array';
+import Words from './words-btree-array';
 import { left_arrow, right_arrow, up_arrow, down_arrow } from './constants';
 import useEventListener from '../Events/useEventListener';
 import Word from './Word';
+
+const wordList = JSON.parse(Words);
 
 const FourButtonEnglishText = () => {
     //keeping track of position
