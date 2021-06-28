@@ -109,7 +109,7 @@ const FourButtonEnglishText = () => {
         <p>The project is made of two parts, the dictionary and the interface.
             The dictionary was created using Racket, ingesting a plain text list of English words and translating them into an implicit binary tree, where a left key is 2n and a right key is 2n+1.
             The interface was created using vanilla JS, and has been ported to React; the code is no longer very much like it looked once, but it's compatible with this website!
-            React is so much easier than vanilla JS that a couple small extra features were added (clicking as well as arrow keys to change language), and some bugfixes introduced.
+            A few extra features were added (clicking as well as arrow keys to change language, and a Python script to insert words into the tree instead of the original Racket), and some bugfixes introduced.
             Otherwise, functionality is on par with the project as originally created.
         </p>
         <hr></hr>
