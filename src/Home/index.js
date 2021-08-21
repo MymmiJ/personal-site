@@ -9,7 +9,7 @@ import Antethesizer from './Images/antethesizer.png';
 const Home = () => {
     return <Container>
         <DefinitionList header="Novelties" entries={[
-            <Typography><Link href="https://naughty-noyce-595824.netlify.app/">Antethesizer</Link> [<Link href="https://github.com/MymmiJ/antethesizer">GitHub</Link>]</Typography>,
+            <Typography><Link href="https://antethesizer.jimmymacgregor.com/">Antethesizer</Link> [<Link href="https://github.com/MymmiJ/antethesizer">GitHub</Link>]</Typography>,
             <Box display="inline-block">
               <Card maxWidth="480px" width="480px">
                 <figure>
