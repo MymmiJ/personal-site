@@ -13,7 +13,7 @@ const Home = () => {
             <Typography>For a more detailed look at my employment history, please see my <Link href="https://www.linkedin.com/in/james-macgregor-41a74340/">LinkedIn profile</Link>.</Typography>
           ]} />,
           <DefinitionList header="Ably" entries={[
-            <Typography>Used Gatsby to develop a <Link href="https://ably.com/docs">static site</Link> that interprets a custom format built on <Link href="https://textile-lang.com/">Textile</Link> into a dynamic code documentation site.</Typography>,
+            <Typography>Used Gatsby to develop a <Link href="https://ably.com/docs">static site</Link> that interprets a custom format built on <Link href="https://textile-lang.com/">Textile</Link> into a code documentation site.</Typography>,
             <Typography>The <Link href="https://github.com/ably/docs">repository is open-source</Link> and accepting contributions or issues.</Typography>
           ]}/>,
           <DefinitionList header="Future" entries={[
