@@ -17,7 +17,7 @@ const Home = () => {
             <Typography>The <Link href="https://github.com/ably/docs">repository is open-source</Link> and accepting contributions or issues.</Typography>
           ]}/>,
           <DefinitionList header="Future" entries={[
-            <Typography>Worked on a CMS with a headless React front-end with a mixture of CalmmJS and RxJS for state management.</Typography>,
+            <Typography>Worked on a CMS with a React front-end with a mixture of CalmmJS and RxJS for state management.</Typography>,
             <Typography>Also worked extensively on the backend technology stack consisting of PHP, Solr, Riak+Yokozuna Solr, ArangoDB Redis, MySQL, and Active Directory.</Typography>
           ]}/>
         ]}/>
