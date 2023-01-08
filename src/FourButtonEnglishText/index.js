@@ -3,6 +3,8 @@ import Words from './words-btree-array';
 import { left_arrow, right_arrow, up_arrow, down_arrow } from './constants';
 import useEventListener from '../Events/useEventListener';
 import Word from './Word';
+import { ExperimentContainer } from '../Common/Containers/ExperimentContainer';
+import { Box } from '@material-ui/core';
 
 const wordList = JSON.parse(Words);
 
@@ -101,7 +103,7 @@ const FourButtonEnglishText = () => {
     }
     useEventListener('keydown', four_button_control);
 
-    return <div>
+    return <ExperimentContainer>
         <p><strong>UP ARROW</strong> deletes an entry or returns you to the middle of the alphabet</p>
         <p><strong>LEFT ARROW</strong> moves the cursor left one word or selects a word earlier in the alphabet</p>
         <p><strong>RIGHT ARROW</strong> moves the cursor right one word or selects a word later in the alphabet</p>
@@ -113,19 +115,21 @@ const FourButtonEnglishText = () => {
             Otherwise, functionality is on par with the project as originally created.
         </p>
         <hr></hr>
-        <p>{words.map((word,i) =>
-        <Word
-            key={ `${word}-${i}` }
-            word={ word }
-            left={ left }
-            right={ right }
-            up={ up }
-            down={ down }
-            selected={ word_number === i }
-            select_mode={ select_mode }
-            word_number={ i }
-        />)}{word_number === words.length && <span>&gt;&gt;</span>}</p>
-    </div>;
+        <Box py={4}>
+            <p>{words.map((word,i) =>
+            <Word
+                key={ `${word}-${i}` }
+                word={ word }
+                left={ left }
+                right={ right }
+                up={ up }
+                down={ down }
+                selected={ word_number === i }
+                select_mode={ select_mode }
+                word_number={ i }
+            />)}{word_number === words.length && <span>&gt;&gt;</span>}</p>
+        </Box>
+    </ExperimentContainer>;
 };
 
 export default FourButtonEnglishText;

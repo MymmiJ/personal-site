@@ -8,6 +8,19 @@ import Antethesizer from './Images/antethesizer.png';
 
 const Home = () => {
     return <Container>
+        <DefinitionList header="Work" entries={[
+          <DefinitionList header="Overview" entries={[
+            <Typography>For a more detailed look at my employment history, please see my <Link href="https://www.linkedin.com/in/james-macgregor-41a74340/">LinkedIn profile</Link>.</Typography>
+          ]} />,
+          <DefinitionList header="Ably" entries={[
+            <Typography>Used Gatsby to develop a <Link href="https://ably.com/docs">static site</Link> that interprets a custom format built on <Link href="https://textile-lang.com/">Textile</Link> into a dynamic code documentation site.</Typography>,
+            <Typography>The <Link href="https://github.com/ably/docs">repository is open-source</Link> and accepting contributions or issues.</Typography>
+          ]}/>,
+          <DefinitionList header="Future" entries={[
+            <Typography>Worked on a CMS with a headless React front-end with a mixture of CalmmJS and RxJS for state management.</Typography>,
+            <Typography>Also worked extensively on the backend technology stack consisting of PHP, Solr, Riak+Yokozuna Solr, ArangoDB Redis, MySQL, and Active Directory.</Typography>
+          ]}/>
+        ]}/>
         <DefinitionList header="Novelties" entries={[
             <Typography><Link href="https://antethesizer.jimmymacgregor.com/">Antethesizer</Link> [<Link href="https://github.com/MymmiJ/antethesizer">GitHub</Link>]</Typography>,
             <Box display="inline-block">
@@ -64,6 +77,7 @@ const Home = () => {
         ]}/>
         <DefinitionList header="Languages Used Professionally/Extensively" entries={[
           "JavaScript",
+          "TypeScript",
           "C#",
           "PHP",
           "Python",
@@ -74,12 +88,14 @@ const Home = () => {
         ]}/>
         <DefinitionList header="Frameworks Used Professionally/Extensively" entries={[
           "React",
+          "Gatsby",
           "Sklearn",
           "Symfony",
           "Tensorflow",
           "Calmm",
         ]}/>
         <DefinitionList header="Technologies I Love" entries={[
+          <Link href="https://github.com/dubzzz/fast-check">Property Testing</Link>,
           <Link href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</Link>,
           <Link href="https://unity.com/">Unity</Link>,
           <Link href="https://www.blender.org/">Blender</Link>,

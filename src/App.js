@@ -26,7 +26,7 @@ function App() {
         <CssBaseline/>
         <header>
           <Grid container alignItems="center" alignContent="center" justify="space-around" spacing={0}>
-            <Grid item><Link href="/"><h1>Projects By Jimmy</h1></Link></Grid>
+            <Grid item><Link href="/"><h1>Jimmy MacGregor - Developer</h1></Link></Grid>
             <Grid item><BrightnessSwitch checked={ lightTheme } handleChange={ switchTheme } /></Grid>
           </Grid>
         </header>
