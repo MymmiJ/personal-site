@@ -4,9 +4,17 @@ import { PersonForm } from "./PersonForm";
 import { SkillForm } from "./SkillForm";
 
 export const SkillGroupForm = ({ skillGroup, updateSkillGroup }) => {
+    const updatePeople = (people) => updateSkillGroup({
+        ...skillGroup,
+        people,
+    });
+    const updateActivePerson = (activePerson) => updateSkillGroup({
+        ...skillGroup,
+        activePerson,
+    });
     return <FormGroup>
         <SkillForm />
-        <PeopleForm />
-        <PersonForm />
+        <PeopleForm people={skillGroup?.people} updatePeople={updatePeople} />
+        <PersonForm person={skillGroup?.activePerson?.name ?? null} updatePerson={updateActivePerson} />
     </FormGroup>;
 }
