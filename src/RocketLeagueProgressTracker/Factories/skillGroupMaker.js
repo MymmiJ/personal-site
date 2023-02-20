@@ -1,4 +1,4 @@
-export const skillGroupMaker = (skills, people, activePerson) => ({
+export const skillGroupMaker = (skills = [], people = [], activePerson = {}) => ({
     skills,
     people,
     activePerson
