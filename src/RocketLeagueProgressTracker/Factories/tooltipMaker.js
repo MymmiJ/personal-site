@@ -1,3 +1,3 @@
-export const tooltipMaker = (title) => ({
+export const tooltipMaker = (title = '') => ({
     title
 });

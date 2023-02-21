@@ -1,20 +1,18 @@
 import {  FormGroup } from "@material-ui/core"
 import { PeopleForm } from "./PeopleForm";
-import { PersonForm } from "./PersonForm";
-import { SkillForm } from "./SkillForm";
+import { SkillsForm } from "./SkillsForm";
 
 export const SkillGroupForm = ({ skillGroup, updateSkillGroup }) => {
     const updatePeople = (people) => updateSkillGroup({
         ...skillGroup,
         people,
     });
-    const updateActivePerson = (activePerson) => updateSkillGroup({
+    const updateSkills = (skills) => updateSkillGroup({
         ...skillGroup,
-        activePerson,
+        skills,
     });
     return <FormGroup>
-        <SkillForm />
+        <SkillsForm skills={skillGroup?.skills} updateSkills={updateSkills} />
         <PeopleForm people={skillGroup?.people} updatePeople={updatePeople} />
-        <PersonForm person={skillGroup?.activePerson?.name ?? null} updatePerson={updateActivePerson} />
     </FormGroup>;
 }

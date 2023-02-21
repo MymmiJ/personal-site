@@ -6,7 +6,6 @@ export const PeopleForm = ({ people = [], updatePeople }) => {
         if(person) {
             updatePeople([...people.slice(0,i), person, ...people.slice(i+1)]);
         } else {
-            console.log(person);
             updatePeople([...people.slice(0,i), ...people.slice(i+1)]);
         }
     }

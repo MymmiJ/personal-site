@@ -5,7 +5,8 @@ import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
 import { SkillGroup } from "./SkillGroup";
 
 export const ProgressTracker = () => {
-    // SkillGroups to change colour along the spectrum as `i` increases
+    // TODO: Create & store reusable items such as measurements, people and skills
+    // TODO: SkillGroups to change colour along the spectrum as `i` increases
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const tableRef = useRef(null);

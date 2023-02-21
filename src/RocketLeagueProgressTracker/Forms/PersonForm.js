@@ -1,7 +1,7 @@
 import { FormControl, FormHelperText, Input, InputLabel } from "@material-ui/core";
 import { Label } from "@material-ui/icons";
 
-export const PersonForm = ({ person, updatePerson = () => {} }) => {
+export const PersonForm = ({ person, updatePerson }) => {
     return person ? 
     <FormControl>
         <InputLabel htmlFor='person-name-input'><Label alt='Name'/></InputLabel>

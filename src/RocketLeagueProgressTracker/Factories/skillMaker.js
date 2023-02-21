@@ -1,6 +1,9 @@
-export const skillMaker = ( name, measurements, tooltip = {}, degreeOfSkill = 0 ) => ({
+import { measurementMaker, measurementsMaker } from "./measurementsMaker";
+import { tooltipMaker } from "./tooltipMaker";
+
+export const skillMaker = ( name, measurements = measurementsMaker(measurementMaker(), []), tooltip = tooltipMaker(), degree = 0 ) => ({
     name,
-    degreeOfSkill,
+    degree,
     measurements,
     tooltip,
 });
