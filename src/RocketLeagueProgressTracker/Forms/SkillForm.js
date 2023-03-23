@@ -15,7 +15,11 @@ export const SkillForm = ({ skill, updateSkill }) => {
         />
         <MeasurementsForm
             measurements={skill.measurements}
-            updateMeasurements={(measurements) => updateSkill({ ...skill, measurements })}
+            updateMeasurements={(measurements) => updateSkill({
+                ...skill,
+                name: skill.name ?? ' ',
+                measurements
+            })}
         />
         <Divider />
     </>: 

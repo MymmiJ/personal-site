@@ -9,9 +9,11 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
     const [showAddingOptions, setShowAddingOptions] = useState(false);
     const toggleShowAddingOptions = () => setShowAddingOptions(!showAddingOptions);
 
+    const [measurementFilterList, setMeasurementFilterList] = useState([]);
+
     // TODO: use global measurements context and add measurements to the options available
     const [globalMeasurements, dispatch] = useContext(GlobalMeasurementsContext);
-    const addMeasurement = (i) => (measurement) => {
+    const addMeasurement = (measurement) => {
         const measurementHasAtLeastOneUsefulField = !!measurement && usefulFields.reduce((acc, currentField) => {
             return acc || !!measurement[currentField];
         }, false);
@@ -44,9 +46,13 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
         {
             showAddingOptions &&
             <>
-                {globalMeasurements.map((measurement, i) =>
-                <Typography>
+                {globalMeasurements.filter((measurement) => !measurementFilterList.includes(measurement.name)).map((measurement, i) =>
+                <Typography key={i}>
                     <Button
+                        onClick={() => {
+                            addMeasurement(measurement);
+                            setMeasurementFilterList([...measurementFilterList, measurement.name]);
+                        }}
                         style={{
                             border: '2px solid',
                             margin: '8px'
