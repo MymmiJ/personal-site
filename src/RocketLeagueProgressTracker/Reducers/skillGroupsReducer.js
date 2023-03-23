@@ -1,3 +1,4 @@
+export const ADD_NEW_SKILL = 'add_new_skill';
 export const REMOVE_SKILL = 'remove_skill';
 export const REMOVE_SKILL_GROUP = 'remove_skill_group';
 export const ADD_NEW_SKILL_GROUP = 'add_new_skill_group';
@@ -5,6 +6,15 @@ export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
+        case ADD_NEW_SKILL:
+            return [
+                ...state.slice(0, action.skillGroupIndex),
+                {
+                    ...state[action.skillGroupIndex],
+                    skills: [...state[action.skillGroupIndex].skills, action.newSkill],
+                },
+                ...state.slice(action.skillGroupIndex+1),
+            ];
         case REMOVE_SKILL:
             return [
                 ...state.slice(0, action.skillGroupIndex),
