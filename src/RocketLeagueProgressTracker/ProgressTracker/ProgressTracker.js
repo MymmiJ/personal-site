@@ -2,6 +2,7 @@ import { Button, Card, Table, TableBody, TableCell, TableRow } from "@material-u
 import { useContext, useRef, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
+import { addNewSkillGroupAction } from "../Reducers/Actions/addNewSkillGroupAction";
 import { SkillGroup } from "./SkillGroup";
 
 export const ProgressTracker = () => {
@@ -22,9 +23,12 @@ export const ProgressTracker = () => {
             </TableBody>
         </Table>
         <NewSkillGroupModal
-            dispatch={(action) => {
-                setShowNewSkillGroupModal(false)
-                dispatch(action);
+            dispatch={(payload) => {
+                setShowNewSkillGroupModal(false);
+                if(payload) {
+                    const action = addNewSkillGroupAction(payload);
+                    dispatch(action);
+                }
             }}
             showModal={showNewSkillGroupModal}
             anchorEl={tableRef?.current}

@@ -3,7 +3,6 @@ import { useState } from "react";
 import styled from "styled-components";
 import { skillGroupMaker } from "../../Factories/skillGroupMaker";
 import { SkillGroupForm } from "../../Forms/SkillGroupForm";
-import { addNewSkillGroupAction } from "../../Reducers/Actions/addNewSkillGroupAction";
 
 const SkillGroupFormContainer = styled.div`
     padding: 12px;
@@ -12,7 +11,7 @@ const SkillGroupFormContainer = styled.div`
 export const NewSkillGroupModal = ({ dispatch, showModal }) => {
     const [skillGroupToCreate, setSkillGroupToCreate] = useState(skillGroupMaker());
     const addNewSkillGroup = () => {
-        dispatch(addNewSkillGroupAction(skillGroupToCreate));
+        dispatch(skillGroupToCreate);
         setSkillGroupToCreate(skillGroupMaker());
     }
     return <Dialog
