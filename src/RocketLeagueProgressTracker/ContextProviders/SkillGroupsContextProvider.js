@@ -14,8 +14,8 @@ const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(measureme
         0,
         ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME                
     )]),
+    20,
     tooltipMaker('General Ground Control Skills'),
-    20
 );
 
 export const DEFAULT_SKILL_GROUPS_STATE =  [

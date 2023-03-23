@@ -18,7 +18,10 @@ export const NewSkillGroupModal = ({ dispatch, showModal }) => {
     return <Dialog
             PaperProps={{ style: { width: '40%' } }}
             open={showModal}
-            onClose={() => dispatch()}
+            onClose={() => {
+                setSkillGroupToCreate(skillGroupMaker());
+                dispatch();
+            }}
         >
         <SkillGroupFormContainer> 
             <SkillGroupForm skillGroup={skillGroupToCreate} updateSkillGroup={setSkillGroupToCreate} />
