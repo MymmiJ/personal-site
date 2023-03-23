@@ -12,8 +12,8 @@ export const ProgressTracker = () => {
     const tableRef = useRef(null);
     return <Card> 
         <Table ref={tableRef}>
+            {skillGroups?.map((skillGroup, i) => <SkillGroup key={i} {...skillGroup} index={i} />)}
             <TableBody>
-                {skillGroups?.map((skillGroup, i) => <SkillGroup key={i} {...skillGroup} index={i} />)}
                 <TableRow>
                     <TableCell>
                         <Button onClick={() => setShowNewSkillGroupModal(true)}>New Skill Group</Button>

@@ -16,4 +16,7 @@ export const skillMaker = ( name, measurements = measurementsMaker(measurementMa
     measurements,
     fundamentals,
     tooltip,
+    degreeHistory: {
+        [measurements.name]: [degree],
+    }
 });
