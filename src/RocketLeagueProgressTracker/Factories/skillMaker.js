@@ -10,7 +10,13 @@ import { tooltipMaker } from "./tooltipMaker";
  * @returns {Skill} object
  */
 
-export const skillMaker = ( name, measurements = measurementsMaker(measurementMaker(), []), degree = '', tooltip = tooltipMaker(), fundamentals = [], ) => ({
+export const skillMaker = (
+    name,
+    measurements = measurementsMaker(measurementMaker(), [measurementMaker()]),
+    degree = '',
+    tooltip = tooltipMaker(),
+    fundamentals = [],
+) => ({
     name,
     degree,
     measurements,
@@ -18,5 +24,6 @@ export const skillMaker = ( name, measurements = measurementsMaker(measurementMa
     tooltip,
     degreeHistory: {
         [measurements.name]: [degree],
+        ...Object.fromEntries(measurements.measurements.map((measurement) => [measurement.name, []])),
     }
 });

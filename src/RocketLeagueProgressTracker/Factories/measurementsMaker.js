@@ -11,20 +11,22 @@ export const measurementMaker = ( name="Level", priority=0, display=ROCKET_LEAGU
     commensurableWith,
 });
 
-export const measurementsMaker = ( selectedMeasurement, measurements=[] ) => ({
+export const measurementsMaker = (selectedMeasurement, measurements=[] ) => ({
     ...selectedMeasurement,
-    maxPriority: Math.max([...measurements.map((m) => m.priority), selectedMeasurement.priority]),
+    maxPriority: Math.max(...[...measurements.map((m) => m.priority)]),
     measurements,
     selectMeasurement (measurementID) {
         let measurement;
         if(typeof measurementID === 'string' || measurementID instanceof String) {
             measurement = measurements.find((measurement) => measurement.name === measurementID);
+        } else {
+            // Assume index
+            measurement = measurements[measurementID];
         }
-        // Assume index
-        measurement = measurements[measurementID];
         this.name = measurement.name;
         this.priority = measurement.priority;
         this.display = measurement.display;
         this.commensurableWith = measurement.commensurableWith;
+        return this;
     }
 });

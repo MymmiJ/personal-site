@@ -6,7 +6,7 @@ import { SkillForm } from "../../Forms/SkillForm";
 
 const SkillFormContainer = styled.div`
     padding: 8px;
-`
+`;
 
 export const NewSkillModal = ({ dispatch, showModal }) => {
     const [skillToCreate, setSkillToCreate] = useState(skillMaker());

@@ -5,15 +5,20 @@ import { skillGroupMaker } from "../Factories/skillGroupMaker";
 import { skillMaker } from "../Factories/skillMaker";
 import { tooltipMaker } from "../Factories/tooltipMaker";
 
-const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(measurementMaker(
+const DribblingChallengeLevelMeasurement = measurementMaker(
     'Dribbling Challenge 2 Level',
     1,
     ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER
-    ), [measurementMaker(
-        'Dribbling Challenge 2 Time',
-        0,
-        ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME                
-    )]),
+);
+
+const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(
+        DribblingChallengeLevelMeasurement,
+        [measurementMaker(
+            'Dribbling Challenge 2 Time',
+            0,
+            ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME                
+        ), DribblingChallengeLevelMeasurement]
+    ),
     20,
     tooltipMaker('General Ground Control Skills'),
 );
