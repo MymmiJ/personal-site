@@ -2,7 +2,7 @@ import { Typography } from "@material-ui/core";
 import { skillMaker } from "../Factories/skillMaker";
 import { SkillForm } from "./SkillForm";
 
-const usefulFields = ['name','degree']
+const usefulFields = ['name','degree'];
 
 export const SkillsForm = ({ skills = [], updateSkills }) => {
     const updateSkill = (i) => (skill) => {

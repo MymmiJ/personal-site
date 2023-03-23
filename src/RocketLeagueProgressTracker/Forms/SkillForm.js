@@ -1,5 +1,5 @@
 import { Divider } from "@material-ui/core";
-import { MeasurementForm } from "./MeasurementForm";
+import { MeasurementsForm } from "./MeasurementsForm";
 import { SkillFormElement } from "./SkillFormComponents/SkillFormElement";
 
 export const SkillForm = ({ skill, updateSkill }) => {
@@ -13,10 +13,9 @@ export const SkillForm = ({ skill, updateSkill }) => {
             {...{ skill, updateSkill }}
             field="degree"
         />
-        {/* TODO: Replace with Measurements Form */}
-        <MeasurementForm
-            measurement={skill.measurement}
-            updateMeasurement={(measurement) => updateSkill({ ...skill, measurement })}
+        <MeasurementsForm
+            measurements={skill.measurements}
+            updateMeasurements={(measurements) => updateSkill({ ...skill, measurements })}
         />
         <Divider />
     </>: 

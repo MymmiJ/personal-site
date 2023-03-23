@@ -1,7 +1,7 @@
 export const ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS = {
-    NUMBER: Symbol('Number'),
-    TIME: Symbol('Time'),
-    TEXT: Symbol('Text'),
+    NUMBER: 'Number',
+    TIME: 'Time',
+    TEXT: 'Text',
 };
 
 export const measurementMaker = ( name="Level", priority=0, display=ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER, commensurableWith=[] ) => ({

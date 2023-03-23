@@ -44,7 +44,7 @@ export const skillGroupsReducer = (state, action) => {
         case INSERT_NEW_SKILL_GROUP:
             return [...state.slice(0, action.index), action.newSkillGroup, ...state.slice(action.index)];
         default:
-            console.warn('Action type not defined', action);
+            console.warn('Skill Group Action type not defined', action);
             return state;
     }
 };
