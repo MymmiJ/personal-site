@@ -18,10 +18,10 @@ export const measurementsMaker = (selectedMeasurement, measurements=[] ) => ({
     selectMeasurement (measurementID) {
         let measurement;
         if(typeof measurementID === 'string' || measurementID instanceof String) {
-            measurement = measurements.find((measurement) => measurement.name === measurementID);
+            measurement = this.measurements.find((measurement) => measurement.name === measurementID);
         } else {
             // Assume index
-            measurement = measurements[measurementID];
+            measurement = this.measurements[measurementID];
         }
         this.name = measurement.name;
         this.priority = measurement.priority;

@@ -18,7 +18,6 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
 
     const [measurementFilterList, setMeasurementFilterList] = useState([]);
 
-    // TODO: use global measurements context and add measurements to the options available
     const [globalMeasurements, dispatch] = useContext(GlobalMeasurementsContext);
     const addMeasurement = (measurement) => {
         const measurementHasAtLeastOneUsefulField = !!measurement && usefulFields.reduce((acc, currentField) => {

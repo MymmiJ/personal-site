@@ -35,7 +35,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, inde
                 onChange={({ target: { value } }) => dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
                 onBlur={() => dispatch(updateSkillAction('degreeHistory', {
                     ...degreeHistory,
-                    [measurements.name]: [...degreeHistory[measurements.name], degree],
+                    [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
                  }, index, skillGroupIndex))}
                 /></TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillAction(skillGroupIndex, index))}>Remove Skill</Button></TableCell>

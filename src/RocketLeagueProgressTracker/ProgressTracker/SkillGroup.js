@@ -22,12 +22,9 @@ export const SkillGroup = ({ skills, index }) => {
     const tableBodyRef = useRef(null);
     return <BottomBorderTableBody ref={tableBodyRef}>
         {skills.map((skill, i) => <Skill key={i} {...skill} index={i} skillGroupIndex={index} />)}
-        {/* TODO: Extract this into its own component */}
         <TableRow>
-            {/* Show Modal to add skill */}
             <TableCell><Button onClick={() => setShowNewSkillModal(true)}>{`Add New Skill`}</Button></TableCell>
         </TableRow>
-        {/* TODO: Extract this into its own component */}
         <TableRow>
             <TableCell><Button onClick={() => setShowNewSkillGroupModal(true)}>Insert New Skill Group</Button></TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillGroupAction(index))}>{`Remove Skill Group ${index + 1}`}</Button></TableCell>
