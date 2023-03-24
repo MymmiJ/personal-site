@@ -23,13 +23,16 @@ export const SkillGroup = ({ skills, people, activePerson, index }) => {
     const tableBodyRef = useRef(null);
     return <BottomBorderTableBody ref={tableBodyRef}>
         <TableRow>
+            <TableCell><strong>Person -</strong></TableCell>
             <TableCell><strong>{activePerson.name}</strong></TableCell>
             {people.filter(person => activePerson.name !== person.name).map((person, i) =>
                 <TableCell key={i}><Button onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button></TableCell>)}
+            <TableCell><Button>Add New Person</Button></TableCell>
         </TableRow>
         {skills.map((skill, i) => <Skill key={i} {...skill} index={i} skillGroupIndex={index} />)}
         <TableRow>
-            <TableCell><Button onClick={() => setShowNewSkillModal(true)}>{`Add New Skill`}</Button></TableCell>
+            <TableCell><Button onClick={() => setShowNewSkillModal(true)}>Add New Skill</Button></TableCell>
+            <TableCell><Button>Add New Measurement</Button></TableCell>
         </TableRow>
         <TableRow>
             <TableCell><Button onClick={() => setShowNewSkillGroupModal(true)}>Insert New Skill Group</Button></TableCell>

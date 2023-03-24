@@ -23,10 +23,14 @@ export const measurementsMaker = (selectedMeasurement, measurements=[] ) => ({
             // Assume index
             measurement = this.measurements[measurementID];
         }
-        this.name = measurement.name;
-        this.priority = measurement.priority;
-        this.display = measurement.display;
-        this.commensurableWith = measurement.commensurableWith;
-        return this;
+        const newMeasurement = {
+            ...this,
+            name: measurement.name,
+            priority: measurement.priority,
+            display: measurement.display,
+            commensurableWith: measurement.commensurableWith
+        };
+
+        return newMeasurement;
     }
 });

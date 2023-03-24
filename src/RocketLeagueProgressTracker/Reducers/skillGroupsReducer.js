@@ -1,3 +1,5 @@
+import { skillMaker } from "../Factories/skillMaker";
+
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
 export const ADD_NEW_SKILL = 'add_new_skill';
@@ -9,10 +11,16 @@ export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
         case SWITCH_PERSON:
+            const skillGroup = state[action.skillGroupIndex];
+            const currentlyActivePerson = skillGroup.activePerson;
+            currentlyActivePerson.skills = skillGroup.skills.map(skill => ({ ...skill }));
+            
+            const activePersonIndex = skillGroup.people.findIndex(person => person.name === currentlyActivePerson.name);
             return [
                 ...state.slice(0, action.skillGroupIndex),
                 {
-                    ...state[action.skillGroupIndex],
+                    skills: action.person.skills ?? skillGroup.skills.map(skill => ({ ...skill, degree: 0, degreeHistory: {} })),
+                    people: [...skillGroup.people.slice(0, activePersonIndex), currentlyActivePerson, ...skillGroup.people.slice(activePersonIndex+1)],
                     activePerson: action.person,
                 },
                 ...state.slice(action.skillGroupIndex+1),
