@@ -1,12 +1,12 @@
 import { Button, Input, TableCell, TableRow, Tooltip } from "@material-ui/core";
 import { useContext } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
-import { removeSkillAction } from "../Reducers/Actions/removeSkillAction";
-import { updateSkillAction } from "../Reducers/Actions/updateSkillAction";
+import { removeSkillAction } from "../Reducers/Actions/SkillGroupsActions/removeSkillAction";
+import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/updateSkillAction";
 import { Measurement } from "./Measurement";
 
 export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, index, skillGroupIndex }) => {
-    const [, dispatch] = useContext(SkillGroupsContext);
+    const [, dispatch] = useContext(SkillGroupsContext);    console.log(name, degree, degreeHistory);
     return <Tooltip {...tooltip}>
         <TableRow>
             <TableCell><Input

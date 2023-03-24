@@ -4,9 +4,9 @@ import styled from "styled-components"
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider"
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal"
 import { NewSkillModal } from "../Modals/AddItemModals/NewSkillModal"
-import { addNewSkillAction } from "../Reducers/Actions/addNewSkillAction"
-import { insertNewSkillGroupAction } from "../Reducers/Actions/insertNewSkillGroupAction"
-import { removeSkillGroupAction } from "../Reducers/Actions/removeSkillGroupAction"
+import { addNewSkillAction } from "../Reducers/Actions/SkillGroupsActions/addNewSkillAction"
+import { insertNewSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/insertNewSkillGroupAction"
+import { removeSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/removeSkillGroupAction"
 import { Skill } from "./Skill"
 
 const BottomBorderTableBody = styled(TableBody)`

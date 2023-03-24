@@ -1,8 +1,8 @@
-import { Button, Typography } from "@material-ui/core"
+import { Button, Checkbox, Typography } from "@material-ui/core"
 import { useContext, useState } from "react";
 import { GlobalMeasurementsContext } from "../ContextProviders/GlobalMeasurementsContextProvider";
 import { measurementMaker } from "../Factories/measurementsMaker";
-import { addNewGlobalMeasurementAction } from "../Reducers/Actions/addNewGlobalMeasurementAction";
+import { addNewGlobalMeasurementAction } from "../Reducers/Actions/GlobalMeasurementActions/addNewGlobalMeasurementAction";
 import { MeasurementForm } from "./MeasurementForm"
 
 const usefulFields = ['name','priority'];
@@ -39,7 +39,10 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
     }}>
         <Typography>Measurements:</Typography>
         { measurements.measurements.map((measurement, i) =>
-            <Typography key={i}>{measurement.name} // Type: {measurement.display}</Typography>)}
+            <div key={i} style={{ display: "flex", alignItems: "center" }}>
+                <Typography key={`typography-${i}`}>{measurement.name} // Type: {measurement.display}</Typography>
+                <Checkbox key={`checkbox-${i}`} onClick={() => updateMeasurements(measurements.selectMeasurement(measurement.name))} checked={measurement.name === measurements.name} />
+            </div>)}
         <div>
             <Button onClick={() => {
                 toggleShowAddingOptions();
@@ -81,6 +84,7 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
                                 onClick={() => {
                                     addMeasurement(newMeasurement);
                                     dispatch(addNewGlobalMeasurementAction(newMeasurement));
+                                    setMeasurementFilterList([...measurementFilterList, newMeasurement.name]);
                                     setShowAddingNewOption(false);
                                     setNewMeasurement(measurementMaker());
                                 }}

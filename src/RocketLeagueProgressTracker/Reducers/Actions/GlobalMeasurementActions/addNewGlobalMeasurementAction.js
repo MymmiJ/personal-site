@@ -1,4 +1,4 @@
-import { ADD_MEASUREMENT } from "../globalMeasurementsReducer";
+import { ADD_MEASUREMENT } from "../../globalMeasurementsReducer";
 
 export const addNewGlobalMeasurementAction = (newMeasurement) => ({
     type: ADD_MEASUREMENT,

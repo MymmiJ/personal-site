@@ -2,7 +2,7 @@ import { Button, Card, Table, TableBody, TableCell, TableRow } from "@material-u
 import { useContext, useRef, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
-import { addNewSkillGroupAction } from "../Reducers/Actions/addNewSkillGroupAction";
+import { addNewSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/addNewSkillGroupAction";
 import { SkillGroup } from "./SkillGroup";
 
 export const ProgressTracker = () => {
