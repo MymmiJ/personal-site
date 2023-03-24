@@ -6,7 +6,7 @@ import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/update
 import { Measurement } from "./Measurement";
 
 export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, index, skillGroupIndex }) => {
-    const [, dispatch] = useContext(SkillGroupsContext);    console.log(name, degree, degreeHistory);
+    const [, dispatch] = useContext(SkillGroupsContext);
     return <Tooltip {...tooltip}>
         <TableRow>
             <TableCell><Input
