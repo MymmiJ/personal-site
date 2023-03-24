@@ -7,13 +7,14 @@ import { NewSkillModal } from "../Modals/AddItemModals/NewSkillModal"
 import { addNewSkillAction } from "../Reducers/Actions/SkillGroupsActions/addNewSkillAction"
 import { insertNewSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/insertNewSkillGroupAction"
 import { removeSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/removeSkillGroupAction"
+import { switchPersonAction } from "../Reducers/Actions/SkillGroupsActions/switchPersonAction"
 import { Skill } from "./Skill"
 
 const BottomBorderTableBody = styled(TableBody)`
     border-bottom: solid 4px;
 `;
 
-export const SkillGroup = ({ skills, index }) => {
+export const SkillGroup = ({ skills, people, activePerson, index }) => {
     const [,dispatch] = useContext(SkillGroupsContext);
     
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
@@ -21,6 +22,11 @@ export const SkillGroup = ({ skills, index }) => {
     
     const tableBodyRef = useRef(null);
     return <BottomBorderTableBody ref={tableBodyRef}>
+        <TableRow>
+            <TableCell><strong>{activePerson.name}</strong></TableCell>
+            {people.filter(person => activePerson.name !== person.name).map((person, i) =>
+                <TableCell key={i}><Button onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button></TableCell>)}
+        </TableRow>
         {skills.map((skill, i) => <Skill key={i} {...skill} index={i} skillGroupIndex={index} />)}
         <TableRow>
             <TableCell><Button onClick={() => setShowNewSkillModal(true)}>{`Add New Skill`}</Button></TableCell>
