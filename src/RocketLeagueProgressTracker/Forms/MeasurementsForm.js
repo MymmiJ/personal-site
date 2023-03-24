@@ -1,6 +1,8 @@
 import { Button, Typography } from "@material-ui/core"
 import { useContext, useState } from "react";
 import { GlobalMeasurementsContext } from "../ContextProviders/GlobalMeasurementsContextProvider";
+import { measurementMaker } from "../Factories/measurementsMaker";
+import { addNewGlobalMeasurementAction } from "../Reducers/Actions/addNewGlobalMeasurementAction";
 import { MeasurementForm } from "./MeasurementForm"
 
 const usefulFields = ['name','priority'];
@@ -8,6 +10,11 @@ const usefulFields = ['name','priority'];
 export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
     const [showAddingOptions, setShowAddingOptions] = useState(false);
     const toggleShowAddingOptions = () => setShowAddingOptions(!showAddingOptions);
+
+    const [showAddingNewOption, setShowAddingNewOption] = useState(false);
+    const toggleShowAddingNewOption = () => setShowAddingNewOption(!showAddingNewOption);
+
+    const [newMeasurement, setNewMeasurement] = useState(measurementMaker());
 
     const [measurementFilterList, setMeasurementFilterList] = useState([]);
 
@@ -17,7 +24,7 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
         const measurementHasAtLeastOneUsefulField = !!measurement && usefulFields.reduce((acc, currentField) => {
             return acc || !!measurement[currentField];
         }, false);
-        if(measurementHasAtLeastOneUsefulField) {
+        if(measurementHasAtLeastOneUsefulField && !measurements.measurements.map(measurement => measurement.name).includes(measurement.name)) {
             updateMeasurements({
                 ...measurements,
                 measurements: [...measurements.measurements, measurement]
@@ -32,15 +39,13 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
         marginBottom: '8px',
     }}>
         <Typography>Measurements:</Typography>
-        {/* TODO: Have the default measurements appear here, then allow adding new measurements via. an 'Add Measurement' button that:
-        reveals existing measurements in the global space and allows you to choose one
-        reveals an 'Add New Measurement' button that, when selected, allows you to add a new measurement from a form and save with a 'Save Measurement' button */}
-        { measurements.measurements.map((measurement, i) => <Typography key={i}>{measurement.name} // Type: {measurement.display}</Typography>)}
+        { measurements.measurements.map((measurement, i) =>
+            <Typography key={i}>{measurement.name} // Type: {measurement.display}</Typography>)}
         <div>
-            <Button onClick={() => toggleShowAddingOptions()}>Add New Measurement</Button>
-            {/* on click, show menu of global measurements and allow selecting an option using the button, which on click is added to measurements
-            and filtered from the global list using a locally stored list of already-selected-options */}
-
+            <Button onClick={() => {
+                toggleShowAddingOptions();
+                setShowAddingNewOption(false);
+            }}>Add Measurement</Button>
         </div>
         <div>
         {
@@ -61,6 +66,36 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
                         {measurement.name} <br />Type: {measurement.display}
                     </Button>
                 </Typography>)}
+                <Button onClick={() => toggleShowAddingNewOption()}>Add New Measurement</Button>
+                <>
+                {
+                    showAddingNewOption &&
+                    <>
+                        <div>
+                            <MeasurementForm
+                                measurement={newMeasurement}
+                                updateMeasurement={setNewMeasurement}
+                            />
+                        </div>
+                        <div>
+                            <Button
+                                onClick={() => {
+                                    addMeasurement(newMeasurement);
+                                    dispatch(addNewGlobalMeasurementAction(newMeasurement));
+                                    setShowAddingNewOption(false);
+                                    setNewMeasurement(measurementMaker());
+                                }}
+                                style={{
+                                    border: '2px solid',
+                                    margin: '8px'
+                                }}
+                            >
+                                {newMeasurement.name} <br />Type: {newMeasurement.display}
+                            </Button>
+                        </div>
+                    </>
+                }
+                </>
             </>
         }
         </div>

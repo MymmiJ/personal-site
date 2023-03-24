@@ -12,10 +12,7 @@ export const MeasurementFormElement = ({ measurement, updateMeasurement, field }
             id={elementId}
             value={safeMeasurement[field] ?? ''}
             onChange={({ target: { value } }) => {
-                if(value && value.length >= 1) {
-                    return updateMeasurement({...safeMeasurement, [field]: value })
-                }
-                return updateMeasurement(null);
+                return updateMeasurement({...safeMeasurement, [field]: value });
             }}
             aria-describedby={`measurement-${field}-helper-text`}
         />
