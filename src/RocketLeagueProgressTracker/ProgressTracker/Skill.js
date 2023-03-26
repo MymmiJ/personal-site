@@ -1,12 +1,16 @@
 import { Button, Input, TableCell, TableRow, Tooltip } from "@material-ui/core";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
+import { NewMeasurementsModal } from "../Modals/AddItemModals/NewMeasurementsModal";
 import { removeSkillAction } from "../Reducers/Actions/SkillGroupsActions/removeSkillAction";
 import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/updateSkillAction";
 import { Measurement } from "./Measurement";
 
 export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fundamentals, index, skillGroupIndex }) => {
     const [, dispatch] = useContext(SkillGroupsContext);
+
+    const [showNewMeasurementsModal, setShowNewMeasurementsModal] = useState(false);
+
     return <Tooltip {...tooltip}>
         <TableRow>
             <TableCell><Input
@@ -28,6 +32,23 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                             index,
                             skillGroupIndex,
                         ));
+                    }
+                } />
+                <Button onClick={() => setShowNewMeasurementsModal(true) }>Add New Measurement</Button>
+                <NewMeasurementsModal showModal={showNewMeasurementsModal} dispatch={
+                    (newMeasurements) => {
+                        if(newMeasurements) {
+                            dispatch(updateSkillAction(
+                                'measurements',
+                                {
+                                    ...measurements,
+                                    measurements: [...measurements.measurements, ...newMeasurements]
+                                },
+                                index,
+                                skillGroupIndex,
+                            ));
+                        }
+                        setShowNewMeasurementsModal(false);
                     }
                 } />
             </TableCell>

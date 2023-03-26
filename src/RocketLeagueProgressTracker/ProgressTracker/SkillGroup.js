@@ -3,6 +3,7 @@ import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { GlobalPeopleContext } from "../ContextProviders/GlobalPeopleProvider";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
+import { NewMeasurementsModal } from "../Modals/AddItemModals/NewMeasurementsModal";
 import { NewPeopleModal } from "../Modals/AddItemModals/NewPeopleModal";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
 import { NewSkillModal } from "../Modals/AddItemModals/NewSkillModal";
@@ -81,9 +82,8 @@ export const SkillGroup = ({ skills, people, activePerson, index }) => {
 
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const [showNewSkillModal, setShowNewSkillModal] = useState(false);
-    
     const [showNewPeopleModal, setShowNewPeopleModal] = useState(false);
-
+    
     const spectrumPosition = index % SPECTRUM_BREADTH;
 
     const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
@@ -98,7 +98,6 @@ export const SkillGroup = ({ skills, people, activePerson, index }) => {
             <TableCell><Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button></TableCell>
             <NewPeopleModal
                 dispatch={(newPeople) => {
-                    console.log(newPeople);
                     if(newPeople) {
                         const validPeople = newPeople
                             .filter(person => !people.find(skillGroupPerson => skillGroupPerson.name === person.name))
@@ -112,8 +111,6 @@ export const SkillGroup = ({ skills, people, activePerson, index }) => {
         {skills.map((skill, i) => <Skill key={i} {...skill} index={i} skillGroupIndex={index} />)}
         <TableRow>
             <TableCell><Button onClick={() => setShowNewSkillModal(true)}>Add New Skill</Button></TableCell>
-            {/* V TODO V */}
-            <TableCell><Button>Add New Measurement</Button></TableCell>
         </TableRow>
         <TableRow>
             <TableCell><Button onClick={() => setShowNewSkillGroupModal(true)}>Insert New Skill Group</Button></TableCell>
