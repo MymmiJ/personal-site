@@ -1,5 +1,3 @@
-import { skillMaker } from "../Factories/skillMaker";
-
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
 export const ADD_NEW_SKILL = 'add_new_skill';

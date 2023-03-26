@@ -5,7 +5,7 @@ import { removeSkillAction } from "../Reducers/Actions/SkillGroupsActions/remove
 import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/updateSkillAction";
 import { Measurement } from "./Measurement";
 
-export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, index, skillGroupIndex }) => {
+export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fundamentals, index, skillGroupIndex }) => {
     const [, dispatch] = useContext(SkillGroupsContext);
     return <Tooltip {...tooltip}>
         <TableRow>
@@ -14,6 +14,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, inde
                 onChange={({ target: { value } }) => dispatch(updateSkillAction('name', value, index, skillGroupIndex))}
                 /></TableCell>
             <TableCell>
+                {/* TODO: Show different display units/input based on selected measurement */}
                 <Measurement {...measurements} onSelect={(value) => {
                         dispatch(updateSkillAction(
                             'measurements',
@@ -30,14 +31,19 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, inde
                     }
                 } />
             </TableCell>
-            <TableCell><Input
-                value={degree}
-                onChange={({ target: { value } }) => dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
-                onBlur={() => dispatch(updateSkillAction('degreeHistory', {
-                    ...degreeHistory,
-                    [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
-                 }, index, skillGroupIndex))}
-                /></TableCell>
+            <TableCell>
+                <Input
+                    style={{ maxWidth: '128px', marginRight: '4px', marginLeft: '4px' }}
+                    value={degree}
+                    onChange={({ target: { value } }) => dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
+                    onBlur={() => dispatch(updateSkillAction('degreeHistory', {
+                        ...degreeHistory,
+                        [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
+                    }, index, skillGroupIndex))}
+                />
+                {/* V TODO V */}
+                <Button onClick={() => console.log('Show graph, history and comparison tools')}>Show Details</Button>
+            </TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillAction(skillGroupIndex, index))}>Remove Skill</Button></TableCell>
         </TableRow>
     </Tooltip>;
