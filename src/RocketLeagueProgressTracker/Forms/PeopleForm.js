@@ -1,7 +1,11 @@
-import { Typography } from "@material-ui/core"
+import { Button, Typography } from "@material-ui/core"
+import { useContext } from "react";
+import { GlobalPeopleContext } from "../ContextProviders/GlobalPeopleProvider";
 import { PersonForm } from "./PersonForm"
 
 export const PeopleForm = ({ people = [], updatePeople }) => {
+    const [globalPeople,] = useContext(GlobalPeopleContext);
+
     const updatePerson = (i) => (person) => {
         if(person) {
             updatePeople([...people.slice(0,i), person, ...people.slice(i+1)]);
@@ -18,5 +22,23 @@ export const PeopleForm = ({ people = [], updatePeople }) => {
                 updatePerson={updatePerson(i)}
                 key={i}
             />)}
+        <div>
+            {
+                globalPeople.map((person, i) =>
+                    <Button
+                        key={i}
+                        style={{
+                            border: '2px solid',
+                            margin: '8px'
+                        }}
+                        onClick={() => updatePeople([
+                            ...people.slice(0, i),
+                            person,
+                            ...people.slice(i+1)
+                        ])}>
+                        Add {person.name} to Skill Group
+                    </Button>)
+            }
+        </div>
     </>
 }

@@ -1,5 +1,6 @@
 import { ExperimentContainer } from "../Common/Containers/ExperimentContainer";
 import { GlobalMeasurementsProvider } from "./ContextProviders/GlobalMeasurementsContextProvider";
+import { GlobalPeopleProvider } from "./ContextProviders/GlobalPeopleProvider";
 import { SkillGroupsProvider } from "./ContextProviders/SkillGroupsContextProvider";
 
 import { ProgressTracker } from "./ProgressTracker/ProgressTracker";
@@ -8,7 +9,9 @@ import { ProgressTracker } from "./ProgressTracker/ProgressTracker";
 const RocketLeagueProgressTracker = () =><ExperimentContainer>
     <SkillGroupsProvider>
         <GlobalMeasurementsProvider>
-            <ProgressTracker />
+            <GlobalPeopleProvider>
+                <ProgressTracker />
+            </GlobalPeopleProvider>
         </GlobalMeasurementsProvider>
     </SkillGroupsProvider>
 </ExperimentContainer>;

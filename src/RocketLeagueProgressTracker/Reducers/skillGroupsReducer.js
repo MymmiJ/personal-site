@@ -1,3 +1,4 @@
+export const UPDATE_PEOPLE = 'update_people';
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
 export const ADD_NEW_SKILL = 'add_new_skill';
@@ -8,6 +9,16 @@ export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
+        case UPDATE_PEOPLE:
+            const nextSkillGroup = state[action.skillGroupIndex];
+            return [
+                ...state.slice(0, action.skillGroupIndex),
+                {
+                    ...nextSkillGroup,
+                    people: [...nextSkillGroup.people, ...action.people],
+                },
+                ...state.slice(action.skillGroupIndex+1),
+            ];
         case SWITCH_PERSON:
             const skillGroup = state[action.skillGroupIndex];
             const currentlyActivePerson = skillGroup.activePerson;
