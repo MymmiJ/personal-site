@@ -449,6 +449,14 @@ module.exports = function (webpackEnv) {
                     { helpers: true },
                   ],
                 ],
+                plugins: [
+                  [
+                    "@babel/plugin-proposal-class-properties",
+                    {
+                      "loose": true
+                    }
+                  ]
+                ],
                 cacheDirectory: true,
                 // See #6846 for context on why cacheCompression is disabled
                 cacheCompression: false,
