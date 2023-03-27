@@ -1,4 +1,4 @@
-import { Paper, TableRow } from "@material-ui/core";
+import { Button, ButtonGroup, Menu, Paper, TableRow, useTheme } from "@material-ui/core";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -8,16 +8,20 @@ import {
     Title,
     Tooltip,
     Legend,
+    Colors,
 } from 'chart.js';
-import { useContext, useRef } from "react";
+import { useContext, useState } from "react";
 import { Line } from 'react-chartjs-2';
 import { TableRefContext } from "../ContextProviders/TableRefContext";
+import { LineChart } from "./SkillDetailDisplays/LineChart";
+import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
     PointElement,
     LineElement,
+    Colors,
     Title,
     Tooltip,
     Legend
@@ -25,9 +29,12 @@ ChartJS.register(
 
 export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) => {
     const tableContainerRef = useContext(TableRefContext);
-
+    const theme = useTheme().palette.type;
+    
+    ChartJS.defaults.color = theme === 'dark' ? '#fff' : '#303030';
     const targetWidth = tableContainerRef?.current?.offsetWidth - 24;
-    console.log('target width', targetWidth);
+
+    const [display, setDisplay] = useState('table');
 
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
@@ -42,6 +49,18 @@ export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) =
             text: title,
           },
         },
+        scales: {
+            x: {
+                ticks: {
+                    color: ChartJS.defaults.color,
+                }
+            },
+            y: {
+                ticks: {
+                    color: ChartJS.defaults.color,
+                }
+            }
+        }
     };
 
     const data = {
@@ -52,7 +71,12 @@ export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) =
     return <TableRow>
         <td colSpan="42">
             <Paper>
-                <Line style={{ width: `${targetWidth}px` }} options={options} data={data} width={targetWidth ?? 0} height={600} />
+                <ButtonGroup style={{ margin: '16px' }}>
+                    <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => setDisplay('table')}>Table</Button>
+                    <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
+                </ButtonGroup>
+                <SkillDetailTable display={display} data={data} />
+                <LineChart display={display} data={data} options={options} targetWidth={targetWidth ?? 0} />
             </Paper>
         </td>
     </TableRow>;

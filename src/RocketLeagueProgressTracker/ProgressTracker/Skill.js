@@ -30,7 +30,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
     });
 
     const timescales = Object.values(degreeHistory).map(degreeHistoryArray => degreeHistoryArray.map((_, i) => i + 1));
-    console.log(timescales);
+
     return <>
         <TableRow>
             <Tooltip {...tooltip}>
@@ -76,15 +76,21 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                 } />
             </TableCell>
             <TableCell>
-                <Input
-                    style={{ maxWidth: '128px', marginRight: '4px', marginLeft: '4px' }}
-                    value={degree}
-                    onChange={({ target: { value } }) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
-                    onBlur={() => dispatch(updateSkillAction('degreeHistory', {
+                <div style={{ display: 'flex' }}>
+                    <Input
+                        style={{ maxWidth: '128px', marginRight: '4px', marginLeft: '4px' }}
+                        value={degree}
+                        onChange={({ target: { value } }) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
+                        onKeyUp={({ key }) => key === 'Enter' && dispatch(updateSkillAction('degreeHistory', {
+                            ...degreeHistory,
+                            [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
+                        }, index, skillGroupIndex))}
+                    />
+                    <Button onClick={() => dispatch(updateSkillAction('degreeHistory', {
                         ...degreeHistory,
                         [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
-                    }, index, skillGroupIndex))}
-                />
+                    }, index, skillGroupIndex))}>Enter</Button>
+                </div>
                 <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'Hide' : 'Show'} Details</Button>
             </TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillAction(skillGroupIndex, index))}>Remove Skill</Button></TableCell>
