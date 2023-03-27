@@ -1,25 +1,27 @@
 import { Button, Card, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
 import { useContext, useRef, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
+import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
 import { addNewSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/addNewSkillGroupAction";
 import { SkillGroup } from "./SkillGroup";
 
 export const ProgressTracker = () => {
-    // TODO: Create & store reusable items such as measurements, people and skills
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const tableRef = useRef(null);
-    return <Card> 
-        <Table ref={tableRef}>
-            {skillGroups?.map((skillGroup, i) => <SkillGroup key={i} {...skillGroup} index={i} />)}
-            <TableBody>
-                <TableRow>
-                    <TableCell>
-                        <Button onClick={() => setShowNewSkillGroupModal(true)}>New Skill Group</Button>
-                    </TableCell>
-                </TableRow>
-            </TableBody>
+    return <Card ref={tableRef}> 
+        <Table>
+            <TableRefContext.Provider value={tableRef}>
+                {skillGroups?.map((skillGroup, i) => <SkillGroup key={i} {...skillGroup} index={i} />)}
+                <TableBody>
+                    <TableRow>
+                        <TableCell>
+                            <Button onClick={() => setShowNewSkillGroupModal(true)}>New Skill Group</Button>
+                        </TableCell>
+                    </TableRow>
+                </TableBody>
+            </TableRefContext.Provider>
         </Table>
         <NewSkillGroupModal
             dispatch={(payload) => {

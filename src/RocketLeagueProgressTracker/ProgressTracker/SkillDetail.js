@@ -9,7 +9,9 @@ import {
     Tooltip,
     Legend,
 } from 'chart.js';
+import { useContext, useRef } from "react";
 import { Line } from 'react-chartjs-2';
+import { TableRefContext } from "../ContextProviders/TableRefContext";
 
 ChartJS.register(
     CategoryScale,
@@ -22,10 +24,15 @@ ChartJS.register(
 );
 
 export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) => {
+    const tableContainerRef = useContext(TableRefContext);
+
+    const targetWidth = tableContainerRef?.current?.offsetWidth - 24;
+    console.log('target width', targetWidth);
+
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
     const options = {
-        responsive: false,
+        responsive: true,
         plugins: {
           legend: {
             position: 'bottom',
@@ -41,11 +48,11 @@ export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) =
         labels: flattenedTimescales,
         datasets: skillProgressions,
     };
-    
+
     return <TableRow>
         <td colSpan="42">
             <Paper>
-                <Line options={options} data={data} />
+                <Line style={{ width: `${targetWidth}px` }} options={options} data={data} width={targetWidth ?? 0} height={600} />
             </Paper>
         </td>
     </TableRow>;

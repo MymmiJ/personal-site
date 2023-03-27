@@ -79,7 +79,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                 <Input
                     style={{ maxWidth: '128px', marginRight: '4px', marginLeft: '4px' }}
                     value={degree}
-                    onChange={({ target: { value } }) => dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
+                    onChange={({ target: { value } }) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
                     onBlur={() => dispatch(updateSkillAction('degreeHistory', {
                         ...degreeHistory,
                         [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), degree],
