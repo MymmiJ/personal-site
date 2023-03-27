@@ -1,6 +1,12 @@
-import { Table, TableRow, TableCell, TableHead, TableBody } from "@material-ui/core";
+import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@material-ui/core";
+import { useContext } from "react";
+import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
 
-export const SkillDetailTable = ({ display, data }) =>{
+const lr = (x) => { console.log(x); return x; }
+
+export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) =>{
+    const [skillGroups, dispatch] = useContext(SkillGroupsContext);
+
     const tableRows = [];
 
     data.datasets.forEach((dataset, i) => {
@@ -8,7 +14,12 @@ export const SkillDetailTable = ({ display, data }) =>{
             if(!tableRows[j]) {
                 tableRows[j] = [];
             }
-            tableRows[j][i] = dataPoint;
+            tableRows[j][i] = {
+                dataPoint,
+                onChange: ({ target: { value }}) => {
+                    console.log(value);
+                }
+            };
         });
     });
 
@@ -27,12 +38,10 @@ export const SkillDetailTable = ({ display, data }) =>{
                     <TableRow key={i}>
                         {
                             Array.from(row, (_, i) => !(i in row) ? null : row[i])
-                                .map((cell, j) =>
-                                <TableCell key={j}>
-                                    {
-                                        cell
-                                    }
-                                </TableCell>)
+                                .map(({ dataPoint, onChange }, j) =>
+                                    <TableCell key={j}>
+                                        <Input onChange={onChange} value={dataPoint} />
+                                    </TableCell>)
                         }
                     </TableRow>)
             }

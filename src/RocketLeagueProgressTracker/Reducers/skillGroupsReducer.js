@@ -1,4 +1,5 @@
 export const UPDATE_PEOPLE = 'update_people';
+export const UPDATE_PERSON_SKILL_DEGREE_HISTORY = 'update_person_skill_degree_history';
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
 export const ADD_NEW_SKILL = 'add_new_skill';
@@ -9,6 +10,66 @@ export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
+        case UPDATE_PERSON_SKILL_DEGREE_HISTORY:
+            const skillGroupToUpdate = state[action.skillGroupIndex];
+            const personToUpdate = skillGroupToUpdate.people[action.personIndex];
+            const skillToUpdate = skillGroupToUpdate[action.skillIndex];
+            const degreeHistoryToUpdate = skillToUpdate['degreeHistory']?.[action.measurementName];
+            const degreeToUpdate = degreeHistoryToUpdate?.[action.degreeIndex];
+
+            if(!degreeToUpdate && (degreeToUpdate !== 0)) {
+                return state;
+            }
+
+            const degreeHistoryMeasurement = personToUpdate.skills[action.skillIndex].degreeHistory?.[action.measurementName] ?? [];
+
+            const updatedPerson = {
+                ...personToUpdate,
+                skills: [
+                    ...personToUpdate.skills.slice(0, action.skillIndex),
+                    {
+                        ...personToUpdate.skills[action.skillIndex],
+                        degreeHistory: {
+                            ...personToUpdate.skills[action.skillIndex].degreeHistory,
+                            [action.measurementName]: [
+                                ...degreeHistoryMeasurement.slice(0, action.degreeIndex),
+                                action.newDegreeValue,
+                                ...degreeHistoryMeasurement.slice(action.degreeIndex+1),
+                            ],
+                        }
+                    },
+                    ...personToUpdate.skills.slice(action.skillIndex+1),
+                ]
+            };
+
+            const isSkillDegreeLatestInDegreeHistory = action.degreeIndex >=
+                skillGroupToUpdate
+                    .activePerson
+                    .skills[action.skillIndex]['degreeHistory']?.[action.measurementName]?.length;
+
+            const updatedActivePerson = personToUpdate.name === skillGroupToUpdate.activePerson.name ?
+                {
+                    ...updatedPerson,
+                    degree: isSkillDegreeLatestInDegreeHistory ? action.newDegreeValue : updatedPerson.degree,
+                } :
+                skillGroupToUpdate.activePerson;
+
+            return [
+                ...state.slice(0, action.skillGroupIndex),
+                {
+                    ...skillGroupToUpdate,
+                    people: [
+                        ...skillGroupToUpdate.people.slice(0, action.personIndex),
+                        {
+                            ...updatedPerson,
+
+                        },
+                        ...skillGroupToUpdate.people.slice(action.skillGroupIndex+1),
+                    ],
+                    activePerson: personToUpdate.name === skillGroupToUpdate.activePerson.name ? updatedPerson : updatedActivePerson
+                },
+                ...state.slice(action.skillGroupIndex+1),
+            ];
         case UPDATE_PEOPLE:
             const nextSkillGroup = state[action.skillGroupIndex];
             return [

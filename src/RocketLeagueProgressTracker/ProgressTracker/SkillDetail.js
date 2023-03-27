@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Menu, Paper, TableRow, useTheme } from "@material-ui/core";
+import { Button, ButtonGroup, Paper, TableRow, useTheme } from "@material-ui/core";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -11,7 +11,6 @@ import {
     Colors,
 } from 'chart.js';
 import { useContext, useState } from "react";
-import { Line } from 'react-chartjs-2';
 import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
@@ -27,7 +26,7 @@ ChartJS.register(
     Legend
 );
 
-export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) => {
+export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressions = [], timescales= [] }) => {
     const tableContainerRef = useContext(TableRefContext);
     const theme = useTheme().palette.type;
     
@@ -75,7 +74,7 @@ export const SkillDetail = ({ title, skillProgressions = [], timescales= [] }) =
                     <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => setDisplay('table')}>Table</Button>
                     <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
                 </ButtonGroup>
-                <SkillDetailTable display={display} data={data} />
+                <SkillDetailTable display={display} data={data} skillIndex={skillIndex} skillGroupIndex={skillGroupIndex} />
                 <LineChart display={display} data={data} options={options} targetWidth={targetWidth ?? 0} />
             </Paper>
         </td>

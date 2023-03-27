@@ -95,6 +95,12 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
             </TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillAction(skillGroupIndex, index))}>Remove Skill</Button></TableCell>
         </TableRow>
-        { showDetails && <SkillDetail title={name} skillProgressions={skillProgressions} timescales={timescales} /> }
+        { showDetails && <SkillDetail
+            title={name}
+            skillIndex={index}
+            skillGroupIndex={skillGroupIndex}
+            skillProgressions={skillProgressions}
+            timescales={timescales}
+        /> }
     </>;
 };
