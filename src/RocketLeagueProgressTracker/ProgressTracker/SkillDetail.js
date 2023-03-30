@@ -70,10 +70,17 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressi
     return <TableRow>
         <td colSpan="42">
             <Paper>
-                <ButtonGroup style={{ margin: '16px' }}>
-                    <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => setDisplay('table')}>Table</Button>
-                    <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
-                </ButtonGroup>
+                <div style={{
+                    display: "flex"
+                }}>
+                    <ButtonGroup style={{ margin: '16px' }}>
+                        <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => setDisplay('table')}>Table</Button>
+                        <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
+                    </ButtonGroup>
+                    <ButtonGroup style={{ margin: '16px' }}>
+                        {/* TODO: Map people from the skill group into this section, add them to the table and line charts. */}
+                    </ButtonGroup>
+                </div>
                 <SkillDetailTable display={display} data={data} skillIndex={skillIndex} skillGroupIndex={skillGroupIndex} />
                 <LineChart display={display} data={data} options={options} targetWidth={targetWidth ?? 0} />
             </Paper>

@@ -1,12 +1,11 @@
 import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@material-ui/core";
 import { useContext } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
-
-const lr = (x) => { console.log(x); return x; }
+import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
+import { updatePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updatePersonSkillDegreeAction";
 
 export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) =>{
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
-
     const tableRows = [];
 
     data.datasets.forEach((dataset, i) => {
@@ -17,7 +16,31 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
             tableRows[j][i] = {
                 dataPoint,
                 onChange: ({ target: { value }}) => {
-                    console.log(value);
+                    const [personName, measurementName] = dataset.label.split(' - ');
+                    if(isNaN(value)) return;
+                    if(personName === skillGroups[skillGroupIndex].activePerson.name) {
+                        dispatch(
+                            updateActivePersonSkillDegreeHistory(
+                                skillGroupIndex,
+                                skillIndex,
+                                measurementName,
+                                j,
+                                Number(value)
+                            )
+                        );
+                    } else {
+                        dispatch(
+                            updatePersonSkillDegreeHistory(
+                                skillGroupIndex,
+                                skillGroups[skillGroupIndex].people.findIndex(person => person.name === personName),
+                                skillIndex,
+                                measurementName,
+                                j,
+                                Number(value)
+                            )
+                        );
+                    }
+
                 }
             };
         });

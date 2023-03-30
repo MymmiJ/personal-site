@@ -1,4 +1,5 @@
 export const UPDATE_PEOPLE = 'update_people';
+export const UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY = 'update_active_person_skill_degree_history';
 export const UPDATE_PERSON_SKILL_DEGREE_HISTORY = 'update_person_skill_degree_history';
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
@@ -10,13 +11,48 @@ export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
+        case UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY:
+            const activePersonSkillGroupToUpdate = state[action.skillGroupIndex];
+            const activePersonToUpdate = activePersonSkillGroupToUpdate.activePerson;
+            const activePersonSkillToUpdate = activePersonSkillGroupToUpdate.skills[action.skillIndex];
+            const activePersonDegreeHistoryToUpdate = activePersonSkillToUpdate.degreeHistory?.[action.measurementName];
+
+            const newSkills = [
+                ...activePersonSkillGroupToUpdate.skills.slice(0, action.skillIndex),
+                {
+                    ...activePersonSkillToUpdate,
+                    degreeHistory: {
+                        ...activePersonSkillToUpdate.degreeHistory,
+                        [action.measurementName]: [
+                            ...activePersonDegreeHistoryToUpdate.slice(0, action.degreeIndex),
+                            action.newDegreeValue,
+                            ...activePersonDegreeHistoryToUpdate.slice(action.degreeIndex+1),
+                        ],
+                    }
+                },
+                ...activePersonSkillGroupToUpdate.skills.slice(action.skillIndex+1),
+            ];
+            const updatedActivePerson = {
+                ...activePersonToUpdate,
+                skills: newSkills,
+            };
+            return [
+                ...state.slice(0, action.skillGroupIndex),
+                {
+                    ...activePersonSkillGroupToUpdate,
+                    skills: newSkills,
+                    activePerson: {
+                        ...updatedActivePerson,
+                    }
+                },
+                ...state.slice(action.skillGroupIndex+1),
+            ];
         case UPDATE_PERSON_SKILL_DEGREE_HISTORY:
             const skillGroupToUpdate = state[action.skillGroupIndex];
             const personToUpdate = skillGroupToUpdate.people[action.personIndex];
-            const skillToUpdate = skillGroupToUpdate[action.skillIndex];
-            const degreeHistoryToUpdate = skillToUpdate['degreeHistory']?.[action.measurementName];
+            const skillToUpdate = skillGroupToUpdate.skills[action.skillIndex];
+            const degreeHistoryToUpdate = skillToUpdate?.degreeHistory?.[action.measurementName];
             const degreeToUpdate = degreeHistoryToUpdate?.[action.degreeIndex];
-
             if(!degreeToUpdate && (degreeToUpdate !== 0)) {
                 return state;
             }
@@ -42,18 +78,6 @@ export const skillGroupsReducer = (state, action) => {
                 ]
             };
 
-            const isSkillDegreeLatestInDegreeHistory = action.degreeIndex >=
-                skillGroupToUpdate
-                    .activePerson
-                    .skills[action.skillIndex]['degreeHistory']?.[action.measurementName]?.length;
-
-            const updatedActivePerson = personToUpdate.name === skillGroupToUpdate.activePerson.name ?
-                {
-                    ...updatedPerson,
-                    degree: isSkillDegreeLatestInDegreeHistory ? action.newDegreeValue : updatedPerson.degree,
-                } :
-                skillGroupToUpdate.activePerson;
-
             return [
                 ...state.slice(0, action.skillGroupIndex),
                 {
@@ -66,7 +90,6 @@ export const skillGroupsReducer = (state, action) => {
                         },
                         ...skillGroupToUpdate.people.slice(action.skillGroupIndex+1),
                     ],
-                    activePerson: personToUpdate.name === skillGroupToUpdate.activePerson.name ? updatedPerson : updatedActivePerson
                 },
                 ...state.slice(action.skillGroupIndex+1),
             ];
