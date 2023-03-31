@@ -9,18 +9,20 @@ import {
     Tooltip,
     Legend,
     Colors,
+    TimeScale,
 } from 'chart.js';
+import 'chartjs-adapter-luxon';
 import { useContext, useState } from "react";
 import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
 import { SkillGroupsPeopleContext } from "../ContextProviders/SkillGroupsPeopleProvider";
-import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
 
 ChartJS.register(
     CategoryScale,
     LinearScale,
+    TimeScale,
     PointElement,
     LineElement,
     Colors,
@@ -56,14 +58,17 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
             const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
             return ({
                 label: `${activePersonName} - ${measurementName}`,
-                data: degreeHistoryMeasurement.map(({ degree }) => degree),
+                data: degreeHistoryMeasurement.map(({ degree, date }) => ({
+                    x: date,
+                    y: degree,
+                })),
                 fill: false,
                 borderColor: `rgb(${red},${green},${blue})`,
                 tension: 0.1,
             });
         });
 
-    const timescales = Object.values(skillDegreeHistory).map(degreeHistoryArray => degreeHistoryArray.map((_, i) => i + 1));
+    const timescales = Object.values(skillDegreeHistory).map(degreeHistoryArray => degreeHistoryArray.map(({ date }) => date));
 
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
@@ -80,6 +85,15 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
         },
         scales: {
             x: {
+                type: 'time',
+                time: {
+                    // Luxon format string
+                    tooltipFormat: 'DD T YY'
+                },
+                title: {
+                    display: true,
+                    text: 'Date'
+                },
                 ticks: {
                     color: ChartJS.defaults.color,
                 }
@@ -88,7 +102,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 ticks: {
                     color: ChartJS.defaults.color,
                 }
-            }
+            },
         }
     };
 

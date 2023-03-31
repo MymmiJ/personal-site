@@ -29,16 +29,7 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                             )
                         );
                     } else {
-                        dispatch(
-                            updatePersonSkillDegreeHistory(
-                                skillGroupIndex,
-                                skillGroups[skillGroupIndex].people.findIndex(person => person.name === personName),
-                                skillIndex,
-                                measurementName,
-                                j,
-                                Number(value)
-                            )
-                        );
+                        // updatePeople
                     }
 
                 }
@@ -63,7 +54,7 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                             Array.from(row, (_, i) => !(i in row) ? null : row[i])
                                 .map(({ dataPoint, onChange }, j) =>
                                     <TableCell key={j}>
-                                        <Input onChange={onChange} value={dataPoint} />
+                                        <Input onChange={onChange} value={dataPoint.y} />
                                     </TableCell>)
                         }
                     </TableRow>)
