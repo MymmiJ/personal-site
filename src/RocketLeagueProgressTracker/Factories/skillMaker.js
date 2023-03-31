@@ -23,7 +23,10 @@ export const skillMaker = (
     fundamentals,
     tooltip,
     degreeHistory: {
-        [measurements.name]: [degree],
+        [measurements.name]: {
+            degree: degree,
+            date: Date.now(),
+        },
         ...Object.fromEntries(measurements.measurements.map((measurement) => [measurement.name, []])),
     }
 });

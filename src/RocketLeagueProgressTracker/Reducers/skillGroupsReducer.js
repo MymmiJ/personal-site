@@ -25,7 +25,10 @@ export const skillGroupsReducer = (state, action) => {
                         ...activePersonSkillToUpdate.degreeHistory,
                         [action.measurementName]: [
                             ...activePersonDegreeHistoryToUpdate.slice(0, action.degreeIndex),
-                            action.newDegreeValue,
+                            {
+                                ...activePersonDegreeHistoryToUpdate[action.degreeIndex],
+                                degree: action.newDegreeValue,
+                            },
                             ...activePersonDegreeHistoryToUpdate.slice(action.degreeIndex+1),
                         ],
                     }
@@ -44,53 +47,6 @@ export const skillGroupsReducer = (state, action) => {
                     activePerson: {
                         ...updatedActivePerson,
                     }
-                },
-                ...state.slice(action.skillGroupIndex+1),
-            ];
-        case UPDATE_PERSON_SKILL_DEGREE_HISTORY:
-            // TODO: Re-evaluate utility of this case
-            const skillGroupToUpdate = state[action.skillGroupIndex];
-            const personToUpdate = skillGroupToUpdate.people[action.personIndex];
-            const skillToUpdate = skillGroupToUpdate.skills[action.skillIndex];
-            const degreeHistoryToUpdate = skillToUpdate?.degreeHistory?.[action.measurementName];
-            const degreeToUpdate = degreeHistoryToUpdate?.[action.degreeIndex];
-            if(!degreeToUpdate && (degreeToUpdate !== 0)) {
-                return state;
-            }
-
-            const degreeHistoryMeasurement = personToUpdate.skills[action.skillIndex].degreeHistory?.[action.measurementName] ?? [];
-
-            const updatedPerson = {
-                ...personToUpdate,
-                skills: [
-                    ...personToUpdate.skills.slice(0, action.skillIndex),
-                    {
-                        ...personToUpdate.skills[action.skillIndex],
-                        degreeHistory: {
-                            ...personToUpdate.skills[action.skillIndex].degreeHistory,
-                            [action.measurementName]: [
-                                ...degreeHistoryMeasurement.slice(0, action.degreeIndex),
-                                action.newDegreeValue,
-                                ...degreeHistoryMeasurement.slice(action.degreeIndex+1),
-                            ],
-                        }
-                    },
-                    ...personToUpdate.skills.slice(action.skillIndex+1),
-                ]
-            };
-
-            return [
-                ...state.slice(0, action.skillGroupIndex),
-                {
-                    ...skillGroupToUpdate,
-                    people: [
-                        ...skillGroupToUpdate.people.slice(0, action.personIndex),
-                        {
-                            ...updatedPerson,
-
-                        },
-                        ...skillGroupToUpdate.people.slice(action.skillGroupIndex+1),
-                    ],
                 },
                 ...state.slice(action.skillGroupIndex+1),
             ];

@@ -20,7 +20,10 @@ export const SkillForm = ({ skill, updateSkill }) => {
                 name: skill.name ?? ' ',
                 degreeHistory: {
                     ...skill.degreeHistory,
-                    [measurements.name]: [skill.degree],
+                    [measurements.name]: {
+                        degree: [skill.degree],
+                        date: Date.now()
+                    }
                 },
                 measurements
             })}

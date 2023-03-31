@@ -16,6 +16,7 @@ import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
 import { SkillGroupsPeopleContext } from "../ContextProviders/SkillGroupsPeopleProvider";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
+import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
 
 ChartJS.register(
     CategoryScale,
@@ -28,9 +29,10 @@ ChartJS.register(
     Legend
 );
 
-export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressions = [], timescales= [] }) => {
+const SPECTRUM_BREADTH = 12;
+
+export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonName, skillDegreeHistory = [], }) => {
     const tableContainerRef = useContext(TableRefContext);
-    const [skillGroups, dispatch] = useContext(SkillGroupsContext);
     const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
     const theme = useTheme().palette.type;
 
@@ -47,6 +49,21 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressi
     const targetWidth = tableContainerRef?.current?.offsetWidth - 24;
 
     const [display, setDisplay] = useState('table');
+
+    const skillProgressions = Object.entries(skillDegreeHistory)
+        .map(([measurementName, degreeHistoryMeasurement], i) => {
+            const spectrumPosition = i % SPECTRUM_BREADTH;
+            const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
+            return ({
+                label: `${activePersonName} - ${measurementName}`,
+                data: degreeHistoryMeasurement.map(({ degree }) => degree),
+                fill: false,
+                borderColor: `rgb(${red},${green},${blue})`,
+                tension: 0.1,
+            });
+        });
+
+    const timescales = Object.values(skillDegreeHistory).map(degreeHistoryArray => degreeHistoryArray.map((_, i) => i + 1));
 
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
@@ -95,10 +112,11 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressi
                         {
                             localPeople
                                 .filter(
-                                    person => person.name !== skillGroups[skillGroupIndex].activePerson.name
+                                    person => person.name !== activePersonName
                                 )
-                                .map((person) => 
+                                .map((person, i) => 
                                     <Button
+                                        key={i}
                                         variant={ selectedLocalPeople.includes(person.name) ? 'contained' : 'outlined' }
                                         onClick={ () => toggleLocalPersonPresence(person.name)}
                                     >
