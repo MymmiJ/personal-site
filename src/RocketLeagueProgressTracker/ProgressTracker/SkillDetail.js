@@ -88,7 +88,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 type: 'time',
                 time: {
                     // Luxon format string
-                    tooltipFormat: 'DD T YY'
+                    tooltipFormat: 'MMM d yyyy'
                 },
                 title: {
                     display: true,
