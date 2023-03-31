@@ -48,6 +48,7 @@ export const skillGroupsReducer = (state, action) => {
                 ...state.slice(action.skillGroupIndex+1),
             ];
         case UPDATE_PERSON_SKILL_DEGREE_HISTORY:
+            // TODO: Re-evaluate utility of this case
             const skillGroupToUpdate = state[action.skillGroupIndex];
             const personToUpdate = skillGroupToUpdate.people[action.personIndex];
             const skillToUpdate = skillGroupToUpdate.skills[action.skillIndex];

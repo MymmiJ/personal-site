@@ -14,6 +14,8 @@ import { useContext, useState } from "react";
 import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
+import { SkillGroupsPeopleContext } from "../ContextProviders/SkillGroupsPeopleProvider";
+import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 
 ChartJS.register(
     CategoryScale,
@@ -28,8 +30,19 @@ ChartJS.register(
 
 export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressions = [], timescales= [] }) => {
     const tableContainerRef = useContext(TableRefContext);
+    const [skillGroups, dispatch] = useContext(SkillGroupsContext);
+    const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
     const theme = useTheme().palette.type;
-    
+
+    const localPeople = getPeopleFromSkillGroup(skillGroupIndex); // There's nothing for you, here.
+    const [selectedLocalPeople, setLocalPeople] = useState([]);
+
+    const toggleLocalPersonPresence = (personName) => {
+        setLocalPeople(selectedLocalPeople.includes(personName) ?
+            selectedLocalPeople.filter(name => name !== personName) :
+            [...selectedLocalPeople, personName]);
+    }
+
     ChartJS.defaults.color = theme === 'dark' ? '#fff' : '#303030';
     const targetWidth = tableContainerRef?.current?.offsetWidth - 24;
 
@@ -79,6 +92,19 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, skillProgressi
                     </ButtonGroup>
                     <ButtonGroup style={{ margin: '16px' }}>
                         {/* TODO: Map people from the skill group into this section, add them to the table and line charts. */}
+                        {
+                            localPeople
+                                .filter(
+                                    person => person.name !== skillGroups[skillGroupIndex].activePerson.name
+                                )
+                                .map((person) => 
+                                    <Button
+                                        variant={ selectedLocalPeople.includes(person.name) ? 'contained' : 'outlined' }
+                                        onClick={ () => toggleLocalPersonPresence(person.name)}
+                                    >
+                                        {person.name}
+                                    </Button>)
+                        }
                     </ButtonGroup>
                 </div>
                 <SkillDetailTable display={display} data={data} skillIndex={skillIndex} skillGroupIndex={skillGroupIndex} />
