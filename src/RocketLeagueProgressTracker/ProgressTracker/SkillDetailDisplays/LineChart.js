@@ -21,7 +21,7 @@ export const LineChart = ({ display, targetWidth, title, data }) => {
           },
           tooltip: {
             callbacks: {
-                label: (context) => getTimeStringFromTimestamp(context.parsed.y),
+                label: (context) => context.dataset.yAxisID === 'yTime' ? getTimeStringFromTimestamp(context.parsed.y) : context.parsed.y
             }
           },
         },
