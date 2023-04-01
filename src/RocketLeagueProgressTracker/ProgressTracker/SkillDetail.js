@@ -109,39 +109,6 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
 
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
-    const options = {
-        responsive: true,
-        plugins: {
-          legend: {
-            position: 'bottom',
-          },
-          title: {
-            display: !!title,
-            text: title,
-          },
-        },
-        scales: {
-            x: {
-                type: 'time',
-                time: {
-                    tooltipFormat: 'MMM d yyyy'
-                },
-                title: {
-                    display: true,
-                    text: 'Date'
-                },
-                ticks: {
-                    color: ChartJS.defaults.color,
-                }
-            },
-            y: {
-                ticks: {
-                    color: ChartJS.defaults.color,
-                }
-            },
-        }
-    };
-
     const data = {
         labels: flattenedTimescales,
         datasets: skillProgressions,
@@ -173,7 +140,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                     </ButtonGroup>
                 </div>
                 <SkillDetailTable display={display} data={data} skillIndex={skillIndex} skillGroupIndex={skillGroupIndex} />
-                <LineChart display={display} data={data} options={options} targetWidth={targetWidth ?? 0} />
+                <LineChart display={display} data={data} title={title} targetWidth={targetWidth ?? 0} />
             </Paper>
         </td>
     </TableRow>;
