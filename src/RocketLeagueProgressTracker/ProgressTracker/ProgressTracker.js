@@ -5,14 +5,29 @@ import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
 import { addNewSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/addNewSkillGroupAction";
 import { SkillGroup } from "./SkillGroup";
+import { SaveButton } from "./DataPersistence/Buttons/SaveButton";
+import { ExportButton } from "./DataPersistence/Buttons/ExportButton";
+import { LoadButton } from "./DataPersistence/Buttons/LoadButton";
+import { GlobalMeasurementsContext } from "../ContextProviders/GlobalMeasurementsContextProvider";
+import { GlobalPeopleContext } from "../ContextProviders/GlobalPeopleProvider";
 
 export const ProgressTracker = () => {
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
+    const [globalMeasurements, dispatchGlobalMeasurements] = useContext(GlobalMeasurementsContext);
+    const [globalPeople, dispatchGlobalPeople] = useContext(GlobalPeopleContext);
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const tableRef = useRef(null);
     return <>
         <Grid container direction="row-reverse">
-            <ButtonGroup><Button>Save</Button><Button>Export</Button></ButtonGroup>
+            <ButtonGroup>
+                <SaveButton data={{
+                    skillGroups,
+                    globalMeasurements,
+                    globalPeople,
+                }} />
+                <ExportButton />
+                <LoadButton />
+            </ButtonGroup>
         </Grid>
         <Card ref={tableRef}> 
             <Table>
