@@ -9,6 +9,7 @@ export const REMOVE_SKILL = 'remove_skill';
 export const REMOVE_SKILL_GROUP = 'remove_skill_group';
 export const ADD_NEW_SKILL_GROUP = 'add_new_skill_group';
 export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
+export const REPLACE_ALL_SKILL_GROUPS = 'replace_all_skill_groups';
 
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
@@ -121,6 +122,8 @@ export const skillGroupsReducer = (state, action) => {
             return [...state, action.newSkillGroup];
         case INSERT_NEW_SKILL_GROUP:
             return [...state.slice(0, action.index), action.newSkillGroup, ...state.slice(action.index)];
+        case REPLACE_ALL_SKILL_GROUPS:
+            return action.skillGroups;
         default:
             console.warn('Skill Group Action type not defined', action);
             return state;

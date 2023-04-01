@@ -1,7 +1,7 @@
 import { Button, Dialog, FormGroup, FormHelperText, Input, Typography } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
-import { SavedFiles } from "../../ProgressTracker/DataPersistence/SavedFiles";
+import { SavedLocalFiles } from "../../ProgressTracker/DataPersistence/SavedLocalFiles";
 
 const SaveFormContainer = styled.div`
     padding: 12px;
@@ -69,7 +69,7 @@ export const SaveModal = ({ data, showModal, closeModal }) => {
             </FormGroup>
             <Typography><em>Coming soon - </em>save your progress tracking data to a RedisCloud instance, so you can share saved progress.</Typography>
             <h2>Saved Progress Trackers</h2>
-            <SavedFiles />
+            <SavedLocalFiles />
         </SaveFormContainer>
     </Dialog>;
 };

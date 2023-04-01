@@ -10,6 +10,9 @@ import { ExportButton } from "./DataPersistence/Buttons/ExportButton";
 import { LoadButton } from "./DataPersistence/Buttons/LoadButton";
 import { GlobalMeasurementsContext } from "../ContextProviders/GlobalMeasurementsContextProvider";
 import { GlobalPeopleContext } from "../ContextProviders/GlobalPeopleProvider";
+import { replaceAllSkillGroupsAction } from "../Reducers/Actions/SkillGroupsActions/replaceAllSkillGroupsAction";
+import { replaceAllGlobalMeasurementsAction } from "../Reducers/Actions/GlobalMeasurementActions/replaceAllGlobalMeasurementsAction";
+import { replaceAllGlobalPeopleAction } from "../Reducers/Actions/GlobalPersonActions/replaceAllGlobalPeopleAction";
 
 export const ProgressTracker = () => {
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
@@ -26,7 +29,13 @@ export const ProgressTracker = () => {
                     globalPeople,
                 }} />
                 <ExportButton />
-                <LoadButton />
+                <LoadButton
+                    loadFunction={(data) => {
+                        dispatch(replaceAllSkillGroupsAction(data.skillGroups));
+                        dispatchGlobalMeasurements(replaceAllGlobalMeasurementsAction(data.globalMeasurements));
+                        dispatchGlobalPeople(replaceAllGlobalPeopleAction(data.globalPeople));
+                    }}
+                />
             </ButtonGroup>
         </Grid>
         <Card ref={tableRef}> 
