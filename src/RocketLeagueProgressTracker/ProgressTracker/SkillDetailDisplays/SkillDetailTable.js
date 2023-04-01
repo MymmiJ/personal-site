@@ -2,7 +2,7 @@ import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@materi
 import { useContext } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
 import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
-import { updatePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updatePersonSkillDegreeAction";
+import { updatePeopleAction } from "../../Reducers/Actions/SkillGroupsActions/updatePeopleAction";
 
 export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) =>{
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
@@ -13,10 +13,12 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
             if(!tableRows[j]) {
                 tableRows[j] = [];
             }
+
+            const [personName, measurementName] = dataset.label.split(' - ');
+
             tableRows[j][i] = {
                 dataPoint,
                 onChange: ({ target: { value }}) => {
-                    const [personName, measurementName] = dataset.label.split(' - ');
                     if(isNaN(value)) return;
                     if(personName === skillGroups[skillGroupIndex].activePerson.name) {
                         dispatch(
@@ -25,13 +27,31 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                                 skillIndex,
                                 measurementName,
                                 j,
-                                Number(value)
+                                Number(value),
+                                dataPoint.x,
                             )
                         );
                     } else {
                         // updatePeople
                     }
 
+                },
+                onChangeDate: ({ target: { value }}) => {
+                    if(!value || !Date.parse(value)) return;
+                    if(personName === skillGroups[skillGroupIndex].activePerson.name) {
+                        dispatch(
+                            updateActivePersonSkillDegreeHistory(
+                                skillGroupIndex,
+                                skillIndex,
+                                measurementName,
+                                j,
+                                dataPoint.y,
+                                Date.parse(value)
+                            )
+                        );
+                    } else {
+                        // updatePeople
+                    }
                 }
             };
         });
@@ -52,9 +72,17 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                     <TableRow key={i}>
                         {
                             Array.from(row, (_, i) => !(i in row) ? null : row[i])
-                                .map(({ dataPoint, onChange }, j) =>
+                                .map(({ dataPoint, onChange, onChangeDate }, j) =>
                                     <TableCell key={j}>
+                                        Degree of Skill:&nbsp;
                                         <Input onChange={onChange} value={dataPoint.y} />
+                                        <br />
+                                        Date (UTC):&nbsp;
+                                        <Input
+                                            type="datetime-local"
+                                            value={(new Date(dataPoint.x)).toISOString().replace(/Z$/,'')}
+                                            onChange={onChangeDate}
+                                        />
                                     </TableCell>)
                         }
                     </TableRow>)

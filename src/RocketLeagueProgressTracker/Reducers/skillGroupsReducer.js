@@ -26,11 +26,11 @@ export const skillGroupsReducer = (state, action) => {
                         [action.measurementName]: [
                             ...activePersonDegreeHistoryToUpdate.slice(0, action.degreeIndex),
                             {
-                                ...activePersonDegreeHistoryToUpdate[action.degreeIndex],
                                 degree: action.newDegreeValue,
+                                date: action.newDegreeDate,
                             },
                             ...activePersonDegreeHistoryToUpdate.slice(action.degreeIndex+1),
-                        ],
+                        ].sort((a, b) => a.date - b.date),
                     }
                 },
                 ...activePersonSkillGroupToUpdate.skills.slice(action.skillIndex+1),

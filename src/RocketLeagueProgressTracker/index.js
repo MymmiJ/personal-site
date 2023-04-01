@@ -3,10 +3,8 @@ import { GlobalMeasurementsProvider } from "./ContextProviders/GlobalMeasurement
 import { GlobalPeopleProvider } from "./ContextProviders/GlobalPeopleProvider";
 import { SkillGroupsProvider } from "./ContextProviders/SkillGroupsContextProvider";
 import { SkillGroupsPeopleProvider } from "./ContextProviders/SkillGroupsPeopleProvider";
-
 import { ProgressTracker } from "./ProgressTracker/ProgressTracker";
 
-// TODO: Enable switch between local and remote.
 const RocketLeagueProgressTracker = () =><ExperimentContainer>
     <SkillGroupsProvider>
         <SkillGroupsPeopleProvider>

@@ -6,6 +6,7 @@ export const updateActivePersonSkillDegreeHistory = (
     measurementName,
     degreeIndex,
     newDegreeValue,
+    newDegreeDate,
 ) => ({
     type: UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY,
     skillGroupIndex,
@@ -13,4 +14,5 @@ export const updateActivePersonSkillDegreeHistory = (
     measurementName,
     degreeIndex,
     newDegreeValue,
+    newDegreeDate,
 });
