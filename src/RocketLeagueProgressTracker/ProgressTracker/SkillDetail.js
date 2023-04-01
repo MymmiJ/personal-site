@@ -12,7 +12,7 @@ import {
     TimeScale,
 } from 'chart.js';
 import 'chartjs-adapter-luxon';
-import { useContext, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
@@ -35,16 +35,20 @@ const SPECTRUM_BREADTH = 12;
 
 export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonName, skillDegreeHistory = [], }) => {
     const tableContainerRef = useContext(TableRefContext);
-    const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
+    const [getPeopleFromSkillGroup,] = useContext(SkillGroupsPeopleContext);
     const theme = useTheme().palette.type;
 
-    const localPeople = getPeopleFromSkillGroup(skillGroupIndex); // There's nothing for you, here.
-    const [selectedLocalPeople, setLocalPeople] = useState([]);
+    const localPeople = getPeopleFromSkillGroup(skillGroupIndex)
+        .filter(
+            person => person.name !== activePersonName
+        ); // There's nothing for you, here.
+    const [selectedLocalPeopleNames, setLocalPeopleNames] = useState([]);
+    useEffect(() => setLocalPeopleNames([]), [activePersonName]);
 
     const toggleLocalPersonPresence = (personName) => {
-        setLocalPeople(selectedLocalPeople.includes(personName) ?
-            selectedLocalPeople.filter(name => name !== personName) :
-            [...selectedLocalPeople, personName]);
+        setLocalPeopleNames(selectedLocalPeopleNames.includes(personName) ?
+            selectedLocalPeopleNames.filter(name => name !== personName) :
+            [...selectedLocalPeopleNames, personName]);
     }
 
     ChartJS.defaults.color = theme === 'dark' ? '#fff' : '#303030';
@@ -52,10 +56,21 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
 
     const [display, setDisplay] = useState('table');
 
-    const skillProgressions = Object.entries(skillDegreeHistory)
+    const selectedLocalPeopleSkillDegreeHistories = selectedLocalPeopleNames.map((personName) => {
+        const selectedPerson = localPeople.find(person => person.name === personName);
+        const selectedPersonSkillDegreeHistory = selectedPerson?.skills?.[skillIndex]?.degreeHistory;
+        return selectedPersonSkillDegreeHistory ? {
+            degreeHistory: selectedPersonSkillDegreeHistory,
+            name: personName,
+        } : false;
+    }).filter(p => !!p);
+
+    let currentSkillDegreeCount = 0;
+    const activePersonSkillProgressions = Object.entries(skillDegreeHistory)
         .map(([measurementName, degreeHistoryMeasurement], i) => {
             const spectrumPosition = i % SPECTRUM_BREADTH;
             const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
+            currentSkillDegreeCount = i + 1;
             return ({
                 label: `${activePersonName} - ${measurementName}`,
                 data: degreeHistoryMeasurement.map(({ degree, date }) => ({
@@ -67,6 +82,28 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 tension: 0.1,
             });
         });
+    const skillProgressions = [
+        ...activePersonSkillProgressions,
+        ...selectedLocalPeopleSkillDegreeHistories.map(selectedPersonSkillDegreeHistory => {
+            const entries = Object.entries(selectedPersonSkillDegreeHistory.degreeHistory);
+            const skillDegreeCountOffset = currentSkillDegreeCount;
+            return entries.map(([measurementName, degreeHistoryMeasurement], i) => {
+                const spectrumPosition = i + skillDegreeCountOffset % SPECTRUM_BREADTH;
+                const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
+                currentSkillDegreeCount = i + skillDegreeCountOffset + 1;
+                return ({
+                    label: `${selectedPersonSkillDegreeHistory.name} - ${measurementName}`,
+                    data: degreeHistoryMeasurement.map(({ degree, date }) => ({
+                        x: date,
+                        y: degree,
+                    })),
+                    fill: false,
+                    borderColor: `rgb(${red},${green},${blue})`,
+                    tension: 0.1,
+                });
+            });
+        }).flat()
+    ];
 
     const timescales = Object.values(skillDegreeHistory).map(degreeHistoryArray => degreeHistoryArray.map(({ date }) => date));
 
@@ -124,13 +161,10 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                         {/* TODO: Map people from the skill group into this section, add them to the table and line charts. */}
                         {
                             localPeople
-                                .filter(
-                                    person => person.name !== activePersonName
-                                )
                                 .map((person, i) => 
                                     <Button
                                         key={i}
-                                        variant={ selectedLocalPeople.includes(person.name) ? 'contained' : 'outlined' }
+                                        variant={ selectedLocalPeopleNames.includes(person.name) ? 'contained' : 'outlined' }
                                         onClick={ () => toggleLocalPersonPresence(person.name)}
                                     >
                                         {person.name}

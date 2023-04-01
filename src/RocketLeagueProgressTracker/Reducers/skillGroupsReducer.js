@@ -1,4 +1,5 @@
 export const UPDATE_PEOPLE = 'update_people';
+export const REPLACE_PEOPLE = 'replace_people';
 export const UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY = 'update_active_person_skill_degree_history';
 export const UPDATE_PERSON_SKILL_DEGREE_HISTORY = 'update_person_skill_degree_history';
 export const SWITCH_PERSON = 'switch_person';
@@ -47,6 +48,16 @@ export const skillGroupsReducer = (state, action) => {
                     activePerson: {
                         ...updatedActivePerson,
                     }
+                },
+                ...state.slice(action.skillGroupIndex+1),
+            ];
+        case REPLACE_PEOPLE:
+            console.log(state, action.skillGroupIndex);
+            return [
+                ...state.slice(0, action.skillGroupIndex),
+                {
+                    ...state[action.skillGroupIndex],
+                    people: action.people,
                 },
                 ...state.slice(action.skillGroupIndex+1),
             ];

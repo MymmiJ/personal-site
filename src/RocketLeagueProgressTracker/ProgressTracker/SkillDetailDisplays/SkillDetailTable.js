@@ -2,11 +2,16 @@ import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@materi
 import { useContext } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
 import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
-import { updatePeopleAction } from "../../Reducers/Actions/SkillGroupsActions/updatePeopleAction";
+import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeopleProvider";
+
+// TODO: We've written everything twice here, when we have some time we should deduplicate and abstract.
 
 export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) =>{
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
+    const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
     const tableRows = [];
+
+    const currentPeople = getPeopleFromSkillGroup(skillGroupIndex);
 
     data.datasets.forEach((dataset, i) => {
         dataset.data.forEach((dataPoint, j) => {
@@ -32,7 +37,30 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                             )
                         );
                     } else {
+                        const personIndex = currentPeople.findIndex((person) => personName === person.name);
+                        const currentPerson = currentPeople[personIndex];
+                        const currentPersonSkills = currentPerson.skills;
+                        const currentPersonSkill = currentPersonSkills[skillIndex];
+                        const currentPersonDegreeHistory = currentPersonSkill.degreeHistory;
+                        const currentPersonDegreeHistoryMeasurement = currentPersonDegreeHistory[measurementName];
                         // updatePeople
+                        dispatchPeopleToSkillGroup(
+                            [...currentPeople.slice(0, personIndex),
+                            {
+                                ...currentPerson,
+                                skills: [...currentPersonSkills.slice(0,skillIndex), { ...currentPersonSkill,
+                                    degreeHistory: {
+                                        ...currentPersonDegreeHistory,
+                                        [measurementName]: [...currentPersonDegreeHistoryMeasurement.slice(0,j),
+                                            { degree: Number(value), date: dataPoint.x },
+                                            ...currentPersonDegreeHistoryMeasurement.slice(j+1) ]
+                                    }
+                                }, ...currentPersonSkills.slice(skillIndex+1)]
+                            },
+                            ...currentPeople.slice(personIndex+1)
+                            ],
+                            skillGroupIndex,
+                        );
                     }
 
                 },
@@ -51,6 +79,29 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                         );
                     } else {
                         // updatePeople
+                        const personIndex = currentPeople.findIndex((person) => personName === person.name);
+                        const currentPerson = currentPeople[personIndex];
+                        const currentPersonSkills = currentPerson.skills;
+                        const currentPersonSkill = currentPersonSkills[skillIndex];
+                        const currentPersonDegreeHistory = currentPersonSkill.degreeHistory;
+                        const currentPersonDegreeHistoryMeasurement = currentPersonDegreeHistory[measurementName];
+                        dispatchPeopleToSkillGroup(
+                            [...currentPeople.slice(0, personIndex),
+                            {
+                                ...currentPerson,
+                                skills: [...currentPersonSkills.slice(0,skillIndex), { ...currentPersonSkill,
+                                    degreeHistory: {
+                                        ...currentPersonDegreeHistory,
+                                        [measurementName]: [...currentPersonDegreeHistoryMeasurement.slice(0,j),
+                                            { degree: dataPoint.y, date: Date.parse(value) },
+                                            ...currentPersonDegreeHistoryMeasurement.slice(j+1) ]
+                                    }
+                                }, ...currentPersonSkills.slice(skillIndex+1)]
+                            },
+                            ...currentPeople.slice(personIndex+1)
+                            ],
+                            skillGroupIndex,
+                        );
                     }
                 }
             };
@@ -72,8 +123,14 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                     <TableRow key={i}>
                         {
                             Array.from(row, (_, i) => !(i in row) ? null : row[i])
-                                .map(({ dataPoint, onChange, onChangeDate }, j) =>
-                                    <TableCell key={j}>
+                                .map((maybeCell, j) => {
+                                    if(!maybeCell) {
+                                        return <TableCell key={j}>
+
+                                        </TableCell>
+                                    }
+                                    const { dataPoint, onChange, onChangeDate } = maybeCell;
+                                    return <TableCell key={j}>
                                         Degree of Skill:&nbsp;
                                         <Input onChange={onChange} value={dataPoint.y} />
                                         <br />
@@ -83,7 +140,8 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                                             value={(new Date(dataPoint.x)).toISOString().replace(/Z$/,'')}
                                             onChange={onChangeDate}
                                         />
-                                    </TableCell>)
+                                    </TableCell>;   
+                                })
                         }
                     </TableRow>)
             }
