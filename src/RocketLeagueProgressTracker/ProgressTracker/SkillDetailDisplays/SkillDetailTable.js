@@ -1,12 +1,12 @@
 import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@material-ui/core";
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
 import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
 import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeopleProvider";
 
 // TODO: We've written everything twice here, when we have some time we should deduplicate and abstract.
-
-export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) =>{
+export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) => {
+    const [scrollAmount, setScrollAmount] = useState(0);
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
     const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
     const tableRows = [];
@@ -108,7 +108,14 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
         });
     });
 
-    return <>{ display === 'table' && <Table>
+    // Prevents scrolling past the table at right hand side
+    const scrollValue = scrollAmount > 90 ? `calc(${scrollAmount}% - ${(1/(10-scrollAmount)) * 320}px)` : `${scrollAmount}%`;
+    return <>{ display === 'table' && <>
+    <input style={{ width: '89.5%' }} type="range" value={scrollAmount} onChange={({ target: { value }}) => setScrollAmount(Number(value))} min={0} max={75}/>
+    <Table style={{
+        position: 'relative',
+        right: scrollValue,
+    }}>
         <TableHead>
             <TableRow>
                 {
@@ -146,6 +153,8 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                     </TableRow>)
             }
         </TableBody>
-    </Table>}</>;
+    </Table>
+    <input style={{ width: '89.5%' }} type="range" value={scrollAmount} onChange={({ target: { value }}) => setScrollAmount(Number(value))} min={0} max={75}/>
+    </>}</>;
 }
    
