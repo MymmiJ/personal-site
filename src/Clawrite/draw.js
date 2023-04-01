@@ -17,8 +17,6 @@ const drawSlash = (context, centerPointX, centerPointY, length, orientation) => 
     context.beginPath();
     context.ellipse(centerPointX,centerPointY,lengthX,lengthY,0,0,2*Math.PI);
     context.fill();
-    //TODO: Learn canvas better - make clawmarks look more clawlike?
-    // Note from the future - and I never did.
 };
 
 const drawSymbol = (context, input, size, symbolSize, rowNumber, ltw) => {

@@ -6,12 +6,28 @@ import { removeSkillAction } from "../Reducers/Actions/SkillGroupsActions/remove
 import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/updateSkillAction";
 import { Measurement } from "./Measurement";
 import { SkillDetail } from "./SkillDetail";
+import { NumberInput } from "./SkillInput/NumberInput";
+import { ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS } from "../Factories/measurementsMaker";
+import { TimeInput } from "./SkillInput/TimeInput";
+
+export const getInputComponentFromMeasurements = (measurements) => {
+    switch(measurements.display) {
+        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER:
+            return NumberInput;
+        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME:
+            return TimeInput;
+        default:
+            return NumberInput;
+    }
+}
 
 export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fundamentals, activePerson, index, skillGroupIndex }) => {
     const [, dispatch] = useContext(SkillGroupsContext);
 
     const [showDetails, setShowDetails] = useState(false);
     const [showNewMeasurementsModal, setShowNewMeasurementsModal] = useState(false);
+
+    const InputComponent = getInputComponentFromMeasurements(measurements);
 
     return <>
         <TableRow>
@@ -23,7 +39,6 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                 </TableCell>
             </Tooltip>
             <TableCell>
-                {/* TODO: Show different display units/input based on selected measurement */}
                 <Measurement {...measurements} onSelect={(value) => {
                         dispatch(updateSkillAction(
                             'measurements',
@@ -33,7 +48,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                         ));
                         dispatch(updateSkillAction(
                             'degree',
-                            degreeHistory[value]?.[degreeHistory[value]?.length - 1] ?? '',
+                            degreeHistory[value]?.[degreeHistory[value]?.length - 1]?.degree ?? '',
                             index,
                             skillGroupIndex,
                         ));
@@ -59,10 +74,9 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
             </TableCell>
             <TableCell>
                 <div style={{ display: 'flex' }}>
-                    <Input
-                        style={{ maxWidth: '128px', marginRight: '4px', marginLeft: '4px' }}
-                        value={degree}
-                        onChange={({ target: { value } }) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
+                    <InputComponent
+                        degree={degree}
+                        onChange={(value) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
                         onKeyUp={({ key }) => key === 'Enter' && dispatch(updateSkillAction('degreeHistory', {
                             ...degreeHistory,
                             [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), {

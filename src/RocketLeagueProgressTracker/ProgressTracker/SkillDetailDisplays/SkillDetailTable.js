@@ -3,11 +3,13 @@ import { useContext, useState } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
 import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
 import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeopleProvider";
+import { getInputComponentFromMeasurements } from "../Skill";
 
 // TODO: We've written everything twice here, when we have some time we should deduplicate and abstract.
 export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) => {
     const [scrollAmount, setScrollAmount] = useState(0);
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
+    const measurements = skillGroups[skillGroupIndex].skills[skillIndex].measurements.measurements;
     const [getPeopleFromSkillGroup, dispatchPeopleToSkillGroup] = useContext(SkillGroupsPeopleContext);
     const tableRows = [];
 
@@ -23,7 +25,8 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
 
             tableRows[j][i] = {
                 dataPoint,
-                onChange: ({ target: { value }}) => {
+                InputComponent: getInputComponentFromMeasurements(measurements.find(measurement => measurement.name === measurementName) ?? {}),
+                onChange: (value) => {
                     if(isNaN(value)) return;
                     if(personName === skillGroups[skillGroupIndex].activePerson.name) {
                         dispatch(
@@ -131,15 +134,12 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                         {
                             Array.from(row, (_, i) => !(i in row) ? null : row[i])
                                 .map((maybeCell, j) => {
-                                    if(!maybeCell) {
-                                        return <TableCell key={j}>
+                                    if(!maybeCell) return <TableCell key={j} />;
 
-                                        </TableCell>
-                                    }
-                                    const { dataPoint, onChange, onChangeDate } = maybeCell;
+                                    const { dataPoint, onChange, onChangeDate, InputComponent } = maybeCell;
                                     return <TableCell key={j}>
                                         Degree of Skill:&nbsp;
-                                        <Input onChange={onChange} value={dataPoint.y} />
+                                        <InputComponent onChange={onChange} degree={dataPoint.y} />
                                         <br />
                                         Date (UTC):&nbsp;
                                         <Input

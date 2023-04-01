@@ -52,7 +52,6 @@ export const skillGroupsReducer = (state, action) => {
                 ...state.slice(action.skillGroupIndex+1),
             ];
         case REPLACE_PEOPLE:
-            console.log(state, action.skillGroupIndex);
             return [
                 ...state.slice(0, action.skillGroupIndex),
                 {

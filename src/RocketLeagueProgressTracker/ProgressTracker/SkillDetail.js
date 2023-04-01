@@ -18,6 +18,8 @@ import { LineChart } from "./SkillDetailDisplays/LineChart";
 import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
 import { SkillGroupsPeopleContext } from "../ContextProviders/SkillGroupsPeopleProvider";
 import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
+import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
+import { ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS } from "../Factories/measurementsMaker";
 
 ChartJS.register(
     CategoryScale,
@@ -33,10 +35,28 @@ ChartJS.register(
 
 const SPECTRUM_BREADTH = 12;
 
+const getYAxisFromMeasurementName = (measurements) => {
+    switch(measurements.display) {
+        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER:
+            return 'y';
+        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME:
+            return 'yTime';
+        default:
+            return 'y';
+    }
+}
+
 export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonName, skillDegreeHistory = [], }) => {
     const tableContainerRef = useContext(TableRefContext);
+    const [skillGroups,] = useContext(SkillGroupsContext);
     const [getPeopleFromSkillGroup,] = useContext(SkillGroupsPeopleContext);
     const theme = useTheme().palette.type;
+
+    const getMeasurementTypeYAxisFromSkillGroup = (skillGroup, measurementName) => {
+        const measurements =  skillGroups[skillGroupIndex].skills[skillIndex].measurements.measurements;
+        const measurement = measurements.find(measurement => measurement.name === measurementName) ?? {};
+        return getYAxisFromMeasurementName(measurement);
+    };
 
     const localPeople = getPeopleFromSkillGroup(skillGroupIndex)
         .filter(
@@ -71,6 +91,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
             const spectrumPosition = i % SPECTRUM_BREADTH;
             const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
             currentSkillDegreeCount = i + 1;
+            const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], measurementName);
             return ({
                 label: `${activePersonName} - ${measurementName}`,
                 data: degreeHistoryMeasurement.map(({ degree, date }) => ({
@@ -80,6 +101,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 fill: false,
                 borderColor: `rgb(${red},${green},${blue})`,
                 tension: 0.1,
+                yAxisID,
             });
         });
     const skillProgressions = [
@@ -91,6 +113,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 const spectrumPosition = i + skillDegreeCountOffset % SPECTRUM_BREADTH;
                 const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
                 currentSkillDegreeCount = i + skillDegreeCountOffset + 1;
+                const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], measurementName);
                 return ({
                     label: `${selectedPersonSkillDegreeHistory.name} - ${measurementName}`,
                     data: degreeHistoryMeasurement.map(({ degree, date }) => ({
@@ -100,6 +123,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                     fill: false,
                     borderColor: `rgb(${red},${green},${blue})`,
                     tension: 0.1,
+                    yAxisID,
                 });
             });
         }).flat()
@@ -125,7 +149,6 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                         <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
                     </ButtonGroup>
                     <ButtonGroup style={{ margin: '16px' }}>
-                        {/* TODO: Map people from the skill group into this section, add them to the table and line charts. */}
                         {
                             localPeople
                                 .map((person, i) => 

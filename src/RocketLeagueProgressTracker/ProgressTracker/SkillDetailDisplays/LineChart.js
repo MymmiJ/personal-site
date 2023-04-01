@@ -1,8 +1,14 @@
 import { Chart as ChartJS } from 'chart.js';
 import { Line } from "react-chartjs-2";
 
+const getTimeStringFromTimestamp = (timestamp) => {
+    const hours = Math.floor(timestamp / 3600);
+    const minutes = Math.floor((timestamp % 3600) / 60);
+    const seconds = timestamp % 60;
+    return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
+}
+
 export const LineChart = ({ display, targetWidth, title, data }) => {
-    
     const options = {
         responsive: true,
         plugins: {
@@ -12,6 +18,11 @@ export const LineChart = ({ display, targetWidth, title, data }) => {
           title: {
             display: !!title,
             text: title,
+          },
+          tooltip: {
+            callbacks: {
+                label: (context) => getTimeStringFromTimestamp(context.parsed.y),
+            }
           },
         },
         scales: {
@@ -33,6 +44,13 @@ export const LineChart = ({ display, targetWidth, title, data }) => {
                     color: ChartJS.defaults.color,
                 }
             },
+            yTime: {
+                position: 'right',
+                ticks: {
+                    color: ChartJS.defaults.color,
+                    callback: getTimeStringFromTimestamp,
+                }
+            }
         }
     };
     return <>{ display === 'line_chart' && <Line style={{ width: `${targetWidth}px` }} options={options} data={data} width={targetWidth} height={600} /> }</>;
