@@ -8,7 +8,21 @@ const getTimeStringFromTimestamp = (timestamp) => {
     return `${hours}:${minutes < 10 ? `0${minutes}` : minutes}:${seconds < 10 ? `0${seconds}` : seconds}`;
 }
 
-export const LineChart = ({ display, targetWidth, title, data }) => {
+const timeXAxis = {
+    type: 'time',
+    time: {
+        tooltipFormat: 'MMM d yyyy'
+    },
+    title: {
+        display: true,
+        text: 'Date'
+    },
+    ticks: {
+        color: ChartJS.defaults.color,
+    }
+};
+
+export const LineChart = ({ display, targetWidth, title, data, xAxisDisplayTime = true }) => {
     const options = {
         responsive: true,
         plugins: {
@@ -26,19 +40,7 @@ export const LineChart = ({ display, targetWidth, title, data }) => {
           },
         },
         scales: {
-            x: {
-                type: 'time',
-                time: {
-                    tooltipFormat: 'MMM d yyyy'
-                },
-                title: {
-                    display: true,
-                    text: 'Date'
-                },
-                ticks: {
-                    color: ChartJS.defaults.color,
-                }
-            },
+            x: xAxisDisplayTime ? timeXAxis : {},
             y: {
                 ticks: {
                     color: ChartJS.defaults.color,

@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Paper, TableRow, useTheme } from "@material-ui/core";
+import { Button, ButtonGroup, FormControlLabel, Paper, Switch, TableRow, Typography, useTheme } from "@material-ui/core";
 import {
     Chart as ChartJS,
     CategoryScale,
@@ -50,6 +50,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
     const tableContainerRef = useContext(TableRefContext);
     const [skillGroups,] = useContext(SkillGroupsContext);
     const [getPeopleFromSkillGroup,] = useContext(SkillGroupsPeopleContext);
+    const [xAxisDisplayTime, setXAxisDisplayTime] = useState(true);
     const theme = useTheme().palette.type;
 
     const getMeasurementTypeYAxisFromSkillGroup = (skillGroup, measurementName) => {
@@ -129,7 +130,8 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
         }).flat()
     ];
 
-    const timescales = Object.values(skillDegreeHistory).map(degreeHistoryArray => degreeHistoryArray.map(({ date }) => date));
+    const timescales = Object.values(skillDegreeHistory)
+        .map(degreeHistoryArray => degreeHistoryArray.map(({ date }, i) => xAxisDisplayTime ? date : i+1));
 
     const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
 
@@ -145,9 +147,22 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                     display: "flex"
                 }}>
                     <ButtonGroup style={{ margin: '16px' }}>
-                        <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => setDisplay('table')}>Table</Button>
+                        <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => {
+                            setDisplay('table');
+                            setXAxisDisplayTime(true);
+                        }}>Table</Button>
                         <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
                     </ButtonGroup>
+                    
+                    {
+                        display === 'line_chart' ?
+                            <div style={{ margin: '16px' }}>
+                                <Switch checked={ xAxisDisplayTime } onChange={ () => setXAxisDisplayTime(!xAxisDisplayTime) }
+                                        aria-label="Enable Date On X Axis" title="Enable Date On X Axis" />
+                                <Typography>Enable Date On X Axis</Typography>
+                            </div>
+                            : null
+                    }
                     <ButtonGroup style={{ margin: '16px' }}>
                         {
                             localPeople
@@ -163,7 +178,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                     </ButtonGroup>
                 </div>
                 <SkillDetailTable display={display} data={data} skillIndex={skillIndex} skillGroupIndex={skillGroupIndex} />
-                <LineChart display={display} data={data} title={title} targetWidth={targetWidth ?? 0} />
+                <LineChart display={display} data={data} title={title} targetWidth={targetWidth ?? 0} xAxisDisplayTime={xAxisDisplayTime} />
             </Paper>
         </td>
     </TableRow>;
