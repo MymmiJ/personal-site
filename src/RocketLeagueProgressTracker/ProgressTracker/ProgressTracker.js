@@ -20,15 +20,16 @@ export const ProgressTracker = () => {
     const [globalPeople, dispatchGlobalPeople] = useContext(GlobalPeopleContext);
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const tableRef = useRef(null);
+    const serializableData = {
+        skillGroups,
+        globalMeasurements,
+        globalPeople,
+    };
     return <>
         <Grid container direction="row-reverse">
             <ButtonGroup>
-                <SaveButton data={{
-                    skillGroups,
-                    globalMeasurements,
-                    globalPeople,
-                }} />
-                <ExportButton />
+                <SaveButton data={serializableData} />
+                <ExportButton data={serializableData} />
                 <LoadButton
                     loadFunction={(data) => {
                         dispatch(replaceAllSkillGroupsAction(data.skillGroups));
