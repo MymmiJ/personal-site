@@ -14,6 +14,7 @@ import Home from './Home';
 import Clawrite from './Clawrite';
 import FourButtonEnglishText from './FourButtonEnglishText';
 import AlgorithmBookClub from './ABC';
+import RocketLeagueProgressTracker from './RocketLeagueProgressTracker';
 
 function App() {
   const prefersLightMode = useMediaQuery('(prefers-color-scheme: light)')
@@ -39,6 +40,9 @@ function App() {
           </Route>
           <Route path="/ABC">
             <AlgorithmBookClub/>
+          </Route>
+          <Route path="/RocketLeagueProgressTracker">
+            <RocketLeagueProgressTracker />
           </Route>
           <Route path="/">
             <Home/>
