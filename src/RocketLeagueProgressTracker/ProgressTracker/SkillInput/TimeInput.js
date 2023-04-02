@@ -5,7 +5,7 @@ export const TimeInput = ({ degree, onChange, onKeyUp }) => {
     const hours = Math.floor(degreeAsNumber / 3600);
     const minutes = Math.floor((degreeAsNumber % 3600) / 60);
     const seconds = degreeAsNumber % 60;
-    return <>
+    return <div style={{ display: 'flex', flexDirection: 'row' }}>
         H:
         <Input
             type="number"
@@ -39,5 +39,5 @@ export const TimeInput = ({ degree, onChange, onKeyUp }) => {
             }}
             onKeyUp={onKeyUp}
         />
-    </>;
+    </div>;
 }
