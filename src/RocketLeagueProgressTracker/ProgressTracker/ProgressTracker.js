@@ -25,17 +25,35 @@ export const ProgressTracker = () => {
         globalMeasurements,
         globalPeople,
     };
+
+    const loadData = (data) => {
+        dispatch(replaceAllSkillGroupsAction(data.skillGroups));
+        dispatchGlobalMeasurements(replaceAllGlobalMeasurementsAction(data.globalMeasurements));
+        dispatchGlobalPeople(replaceAllGlobalPeopleAction(data.globalPeople));
+    };
+
+    const importableData = (new URL(window.location)).searchParams.get('import-data');
+    if(importableData) {
+        try {
+            const fromB64 = decodeURIComponent(atob(importableData));
+            const deserializedData = JSON.parse(fromB64);
+            loadData(deserializedData);
+        } catch(e) {
+            console.error(e);
+        } finally {
+            const href = window.location.href;
+            const newUrl = href.split('?')[0];
+            window.history.pushState({}, null, newUrl);
+        }
+    }
+
     return <>
         <Grid container direction="row-reverse">
             <ButtonGroup>
                 <SaveButton data={serializableData} />
                 <ExportButton data={serializableData} />
                 <LoadButton
-                    loadFunction={(data) => {
-                        dispatch(replaceAllSkillGroupsAction(data.skillGroups));
-                        dispatchGlobalMeasurements(replaceAllGlobalMeasurementsAction(data.globalMeasurements));
-                        dispatchGlobalPeople(replaceAllGlobalPeopleAction(data.globalPeople));
-                    }}
+                    loadFunction={loadData}
                 />
             </ButtonGroup>
         </Grid>

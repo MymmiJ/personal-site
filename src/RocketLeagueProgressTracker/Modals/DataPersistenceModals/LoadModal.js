@@ -42,7 +42,7 @@ export const LoadModal = ({ loadFunction, showModal, closeModal }) => {
             <ButtonGroup orientation="vertical">
             {
                 storedItems.map(name =>
-                    <Button onClick={() => setSelectedDataToLoad(name)}>{name.replace(PROGRESS_TRACKER_NAMESPACE, '')}</Button>)
+                    <Button key={name} onClick={() => setSelectedDataToLoad(name)}>{name.replace(PROGRESS_TRACKER_NAMESPACE, '')}</Button>)
             }
             </ButtonGroup>
             <Typography><em>Coming soon - </em>save your progress tracking data to a RedisCloud instance, so you can share saved progress.</Typography>
