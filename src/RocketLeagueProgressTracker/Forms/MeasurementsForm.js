@@ -1,3 +1,4 @@
+/* eslint-disable react/jsx-no-comment-textnodes */
 import { Button, Checkbox, Typography } from "@material-ui/core"
 import { useContext, useState } from "react";
 import { GlobalMeasurementsContext } from "../ContextProviders/GlobalMeasurementsContextProvider";

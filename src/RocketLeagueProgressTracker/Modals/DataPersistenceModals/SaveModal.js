@@ -5,13 +5,13 @@ import { SavedLocalFiles } from "../../ProgressTracker/DataPersistence/SavedLoca
 
 const SaveFormContainer = styled.div`
     padding: 12px;
-`
+`;
 
-const SAVE_TARGETS = {
-    LOCAL: 'local',
-    REDIS: 'redis',
-    CUSTOM: 'custom',
-}
+// const SAVE_TARGETS = {
+//     LOCAL: 'local',
+//     REDIS: 'redis',
+//     CUSTOM: 'custom',
+// }
 
 const ERROR_NO_SAVE_NAME = 'Please fill out a name for your saved data';
 
@@ -20,7 +20,7 @@ export const PROGRESS_TRACKER_NAMESPACE = '__rocket_league_progress_tracker_'
 export const SaveModal = ({ data, showModal, closeModal }) => {
     const [saveName, setSaveName] = useState('');
     const [customValidity, setCustomValidity] = useState(ERROR_NO_SAVE_NAME);
-    const [saveTarget, setSaveTarget] = useState(SAVE_TARGETS.LOCAL);
+    // const [saveTarget, setSaveTarget] = useState(SAVE_TARGETS.LOCAL);
 
     const resetAndQuit = () => {
         setSaveName('');

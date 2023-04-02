@@ -4,19 +4,19 @@ import styled from "styled-components";
 
 const LoadFormContainer = styled.div`
     padding: 12px;
-`
+`;
 
-const LOAD_TARGETS = {
-    LOCAL: 'local',
-    REDIS: 'redis',
-    CUSTOM: 'custom',
-}
+// const LOAD_TARGETS = {
+//     LOCAL: 'local',
+//     REDIS: 'redis',
+//     CUSTOM: 'custom',
+// }
 
 export const PROGRESS_TRACKER_NAMESPACE = '__rocket_league_progress_tracker_'
 
 export const LoadModal = ({ loadFunction, showModal, closeModal }) => {
     const [selectedDataToLoad, setSelectedDataToLoad] = useState(null);
-    const [loadTarget, setLoadTarget] = useState(LOAD_TARGETS.LOCAL);
+    // const [loadTarget, setLoadTarget] = useState(LOAD_TARGETS.LOCAL);
 
     const storedItems = Object.keys(window.localStorage)
         .filter(name => name.startsWith(PROGRESS_TRACKER_NAMESPACE));

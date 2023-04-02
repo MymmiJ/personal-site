@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, Dialog, Typography } from "@material-ui/core";
+import { Button, Dialog, Typography } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
 
@@ -6,18 +6,18 @@ const ExportFormContainer = styled.div`
     padding: 12px;
 `;
 
-const EXPORT_TARGETS = {
-    URL: 'url',
-    CSV_FILE: 'csv',
-    JSON_FILE: 'json',
-    CUSTOM: 'custom',
-};
+// const EXPORT_TARGETS = {
+//     URL: 'url',
+//     CSV_FILE: 'csv',
+//     JSON_FILE: 'json',
+//     CUSTOM: 'custom',
+// };
 
 export const PROGRESS_TRACKER_NAMESPACE = '__rocket_league_progress_tracker_'
 
 export const ExportModal = ({ data, showModal, closeModal }) => {
     const [url, setUrl] = useState(null);
-    const [exportTarget, setExportTarget] = useState(EXPORT_TARGETS.URL);
+    // const [exportTarget, setExportTarget] = useState(EXPORT_TARGETS.URL);
 
     return <Dialog
             PaperProps={{ style: { width: '40%' } }}
