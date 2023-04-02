@@ -1,4 +1,4 @@
-import { Button, Input, TableCell, TableRow, Tooltip } from "@material-ui/core";
+import { Button, FormHelperText, Input, TableCell, TableRow, Tooltip } from "@material-ui/core";
 import { useContext, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 import { NewMeasurementsModal } from "../Modals/AddItemModals/NewMeasurementsModal";
@@ -29,6 +29,8 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
 
     const InputComponent = getInputComponentFromMeasurements(measurements);
 
+    const degreeHistoryMeasurement = degreeHistory?.[measurements.name];
+    const degreeHistoryLatestValue = degreeHistoryMeasurement[degreeHistoryMeasurement.length - 1];
     return <>
         <TableRow>
             <Tooltip {...tooltip}>
@@ -75,24 +77,27 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
             </TableCell>
             <TableCell>
                 <div style={{ display: 'flex' }}>
-                    <InputComponent
-                        degree={degree}
-                        onChange={(value) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
-                        onKeyUp={({ key }) => key === 'Enter' && dispatch(updateSkillAction('degreeHistory', {
-                            ...degreeHistory,
-                            [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), {
-                                degree,
-                                date: Date.now(),
-                            }],
-                        }, index, skillGroupIndex))}
-                    />
+                    <div style={{ display: 'flex', flexDirection: 'column' }}>
+                        <InputComponent
+                            degree={degree}
+                            onChange={(value) => !isNaN(value) && dispatch(updateSkillAction('degree', Number(value), index, skillGroupIndex))}
+                            onKeyUp={({ key }) => key === 'Enter' && dispatch(updateSkillAction('degreeHistory', {
+                                ...degreeHistory,
+                                [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), {
+                                    degree,
+                                    date: Date.now(),
+                                }],
+                            }, index, skillGroupIndex))}
+                        />
+                        { degree !== degreeHistoryLatestValue.degree ? <FormHelperText>Click 'Update Skill' or press the Enter key to update this skill</FormHelperText> : null }
+                    </div>
                     <Button onClick={() => dispatch(updateSkillAction('degreeHistory', {
                         ...degreeHistory,
                         [measurements.name]: [...(degreeHistory?.[measurements.name] ? degreeHistory[measurements.name] : []), {
                             degree,
                             date: Date.now(),
                         }],
-                    }, index, skillGroupIndex))}>Enter</Button>
+                    }, index, skillGroupIndex))}>Update Skill</Button>
                 </div>
                 <Button onClick={() => setShowDetails(!showDetails)}>{showDetails ? 'Hide' : 'Show'} Details</Button>
             </TableCell>

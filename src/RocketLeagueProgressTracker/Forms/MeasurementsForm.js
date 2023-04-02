@@ -6,8 +6,6 @@ import { measurementMaker } from "../Factories/measurementsMaker";
 import { addNewGlobalMeasurementAction } from "../Reducers/Actions/GlobalMeasurementActions/addNewGlobalMeasurementAction";
 import { MeasurementForm } from "./MeasurementForm"
 
-// TODO: MeasurementForm - rename measurements, measurement type, deduplicate rename degree enter stuff (add row?)
-
 const usefulFields = ['name','priority'];
 
 export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowAddingOptions = false }) => {
