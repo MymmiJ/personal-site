@@ -30,7 +30,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
     const InputComponent = getInputComponentFromMeasurements(measurements);
 
     const degreeHistoryMeasurement = degreeHistory?.[measurements.name];
-    const degreeHistoryLatestValue = degreeHistoryMeasurement[degreeHistoryMeasurement.length - 1];
+    const degreeHistoryLatestValue = degreeHistoryMeasurement?.[degreeHistoryMeasurement?.length - 1];
     return <>
         <TableRow>
             <Tooltip {...tooltip}>
@@ -89,7 +89,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                                 }],
                             }, index, skillGroupIndex))}
                         />
-                        { degree !== degreeHistoryLatestValue?.degree ? <FormHelperText>Click 'Update Skill' or press the Enter key to update this skill</FormHelperText> : null }
+                        { degree !== degreeHistoryLatestValue?.degree ? <FormHelperText>Click 'Update Skill' or press the Enter key to add row</FormHelperText> : null }
                     </div>
                     <Button onClick={() => dispatch(updateSkillAction('degreeHistory', {
                         ...degreeHistory,
