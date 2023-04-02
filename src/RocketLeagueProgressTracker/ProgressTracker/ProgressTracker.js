@@ -15,6 +15,7 @@ import { replaceAllGlobalMeasurementsAction } from "../Reducers/Actions/GlobalMe
 import { replaceAllGlobalPeopleAction } from "../Reducers/Actions/GlobalPersonActions/replaceAllGlobalPeopleAction";
 
 // TODO: Remove people from a skill group
+// TODO: Empty default progress tracker skillGroups data
 export const ProgressTracker = () => {
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
     const [globalMeasurements, dispatchGlobalMeasurements] = useContext(GlobalMeasurementsContext);

@@ -6,6 +6,7 @@ import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeop
 import { getInputComponentFromMeasurements } from "../Skill";
 
 // TODO: We've written everything twice here, when we have some time we should deduplicate and abstract.
+// TODO: Allow removing entries from degreeHistory
 export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex }) => {
     const [scrollAmount, setScrollAmount] = useState(0);
     const [skillGroups, dispatch] = useContext(SkillGroupsContext);
