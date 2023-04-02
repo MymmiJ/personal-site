@@ -54,15 +54,16 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                         ));
                     }
                 } />
-                <Button onClick={() => setShowNewMeasurementsModal(true) }>Add New Measurement</Button>
+                <Button onClick={() => setShowNewMeasurementsModal(true) }>Add Measurement Types</Button>
                 <NewMeasurementsModal showModal={showNewMeasurementsModal} dispatch={
                     (newMeasurements) => {
                         if(newMeasurements) {
+                            const filteredNewMeasurements = newMeasurements.filter(measurement => !measurements.measurements.includes(measurement));
                             dispatch(updateSkillAction(
                                 'measurements',
                                 {
                                     ...measurements,
-                                    measurements: [...measurements.measurements, ...newMeasurements]
+                                    measurements: [...measurements.measurements, ...filteredNewMeasurements]
                                 },
                                 index,
                                 skillGroupIndex,

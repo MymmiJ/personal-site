@@ -37,8 +37,8 @@ export const NewMeasurementsModal = ({ dispatch, showModal }) => {
             }}
         >
         <MeasurementsFormContainer>
-            <MeasurementsForm measurements={measurementsToCreate} updateMeasurements={setMeasurementsToCreate} />
-            <Button onClick={addNewMeasurements}>Add New Measurements</Button>
+            <MeasurementsForm measurements={measurementsToCreate} updateMeasurements={setMeasurementsToCreate} alwaysShowAddingOptions={true} />
+            <Button onClick={addNewMeasurements}>Add Measurement Types</Button>
         </MeasurementsFormContainer>
     </Dialog>;
 };

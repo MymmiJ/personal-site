@@ -6,10 +6,12 @@ import { measurementMaker } from "../Factories/measurementsMaker";
 import { addNewGlobalMeasurementAction } from "../Reducers/Actions/GlobalMeasurementActions/addNewGlobalMeasurementAction";
 import { MeasurementForm } from "./MeasurementForm"
 
+// TODO: MeasurementForm - rename measurements, measurement type, deduplicate rename degree enter stuff (add row?)
+
 const usefulFields = ['name','priority'];
 
-export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
-    const [showAddingOptions, setShowAddingOptions] = useState(false);
+export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowAddingOptions = false }) => {
+    const [showAddingOptions, setShowAddingOptions] = useState(alwaysShowAddingOptions);
     const toggleShowAddingOptions = () => setShowAddingOptions(!showAddingOptions);
 
     const [showAddingNewOption, setShowAddingNewOption] = useState(false);
@@ -32,6 +34,8 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
         }
     }
 
+    const filteredGlobalMeasurements = globalMeasurements.filter((measurement) => !measurementFilterList.includes(measurement.name));
+
     return <div style={{
         borderTop: 'solid 4px',
         marginTop: '8px',
@@ -44,17 +48,18 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
                 <Typography key={`typography-${i}`}>{measurement.name} // Type: {measurement.display}</Typography>
                 <Checkbox key={`checkbox-${i}`} onClick={() => updateMeasurements(measurements.selectMeasurement(measurement.name))} checked={measurement.name === measurements.name} />
             </div>)}
-        <div>
+        { !alwaysShowAddingOptions && <div>
             <Button onClick={() => {
                 toggleShowAddingOptions();
                 setShowAddingNewOption(false);
             }}>Add Measurement</Button>
-        </div>
+        </div> }
         <div>
         {
             showAddingOptions &&
             <>
-                {globalMeasurements.filter((measurement) => !measurementFilterList.includes(measurement.name)).map((measurement, i) =>
+                { filteredGlobalMeasurements.length > 0 ? <Typography>Select measurement types to add from the list below</Typography> : null }
+                {filteredGlobalMeasurements.map((measurement, i) =>
                 <Typography key={i}>
                     <Button
                         onClick={() => {
@@ -69,7 +74,7 @@ export const MeasurementsForm = ({ measurements, updateMeasurements }) => {
                         {measurement.name} <br />Type: {measurement.display}
                     </Button>
                 </Typography>)}
-                <Button onClick={() => toggleShowAddingNewOption()}>Add New Measurement</Button>
+                <Button onClick={() => toggleShowAddingNewOption()}>Add New Measurement Type</Button>
                 <>
                 {
                     showAddingNewOption &&
