@@ -1,4 +1,4 @@
-import { Button, ButtonGroup, FormControlLabel, Paper, Switch, TableRow, Typography, useTheme } from "@material-ui/core";
+import { Button, ButtonGroup, Paper, Switch, TableRow, Typography, useTheme } from "@material-ui/core";
 import {
     Chart as ChartJS,
     CategoryScale,
