@@ -25,7 +25,7 @@ const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(
 
 export const DEFAULT_SKILL_GROUPS_STATE =  [
     skillGroupMaker(
-        [DRIBBLING_DEMO_SKILL,],
+        [],
         [{ name: "AntiSkub" }, { name: "BeesMode" }],
         { name: "AntiSkub" }
     )
