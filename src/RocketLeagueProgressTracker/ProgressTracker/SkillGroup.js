@@ -15,6 +15,7 @@ import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPo
 import { renameSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/renameSkillGroupAction";
 import { NewFundamentalsModal } from "../Modals/AddItemModals/NewFundamentalsModal";
 import { replaceSkillGroupFundamentalsAction } from "../Reducers/Actions/SkillGroupsActions/replaceSkillGroupFundamentalsAction";
+import { replacePeopleAction } from "../Reducers/Actions/SkillGroupsActions/replacePeopleAction";
 
 // Number at which point we wrap to the start of the rainbow again
 const SPECTRUM_BREADTH = 10;
@@ -44,13 +45,20 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
                 <FormHelperText>Skill group name</FormHelperText>
             </TableCell>
             <TableCell colSpan="2">
-                { activePerson.name && <><strong>Selected Person: </strong>
-                <Button variant="contained">{activePerson.name}</Button></> }
-                {
-                    people.filter(person => activePerson.name !== person.name).map((person, i) =>
-                        <Button variant="outlined" key={i} onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>)
-                }
-                <Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button>
+                <div style={{ display: 'flex', alignItems: 'center' }}>
+                    { activePerson.name && <><strong>Selected Person: </strong>
+                        <Button variant="contained">{activePerson.name}</Button></> }
+                    {
+                        people.filter(person => activePerson.name !== person.name).map((person, i) =>
+                        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                            <Button variant="outlined" key={i} onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>
+                            <Button style={{ maxHeight: '20px' }} variant="text" key={i} onClick={() => dispatch(replacePeopleAction(people.filter(
+                                existingPerson => existingPerson.name !== person.name
+                            ), index))}>Remove</Button>
+                        </div>)
+                    }
+                    <Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button>
+                </div>
                 <NewPeopleModal
                     dispatch={(newPeople) => {
                         if(newPeople) {
