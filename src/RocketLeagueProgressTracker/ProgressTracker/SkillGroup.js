@@ -1,4 +1,4 @@
-import { Button, TableBody, TableCell, TableRow } from "@material-ui/core";
+import { Button, FormHelperText, Input, TableBody, TableCell, TableRow } from "@material-ui/core";
 import { useContext, useRef, useState } from "react";
 import styled from "styled-components";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
@@ -12,6 +12,7 @@ import { switchPersonAction } from "../Reducers/Actions/SkillGroupsActions/switc
 import { updatePeopleAction } from "../Reducers/Actions/SkillGroupsActions/updatePeopleAction";
 import { Skill } from "./Skill";
 import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
+import { renameSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/renameSkillGroupAction";
 
 // Number at which point we wrap to the start of the rainbow again
 const SPECTRUM_BREADTH = 10;
@@ -20,7 +21,7 @@ const BottomBorderTableBody = styled(TableBody)`
     border-bottom: solid 4px;
 `;
 
-export const SkillGroup = ({ skills, people, activePerson, index }) => {
+export const SkillGroup = ({ skills, people, activePerson, name='', index }) => {
     const [,dispatch] = useContext(SkillGroupsContext);
 
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
@@ -34,6 +35,10 @@ export const SkillGroup = ({ skills, people, activePerson, index }) => {
     const tableBodyRef = useRef(null);
     return <BottomBorderTableBody style={{ backgroundColor: `rgba(${red},${green},${blue},0.04)` }} ref={tableBodyRef}>
         <TableRow>
+            <TableCell>
+                <Input onChange={({ target: { value } }) => dispatch(renameSkillGroupAction(index, value))} type="text" value={name} />
+                <FormHelperText>Name for the skill group</FormHelperText>
+            </TableCell>
             <TableCell><strong>Person -</strong></TableCell>
             <TableCell colSpan="2">
                 <strong>{activePerson.name}</strong>

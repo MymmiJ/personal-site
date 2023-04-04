@@ -1,5 +1,6 @@
-export const skillGroupMaker = (skills = [], people = [], activePerson = {}) => ({
+export const skillGroupMaker = (skills = [], people = [], activePerson = {}, name = '') => ({
     skills,
     people,
-    activePerson
+    activePerson,
+    name
 });

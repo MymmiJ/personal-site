@@ -1,4 +1,4 @@
-import { Button, Dialog } from "@material-ui/core";
+import { Button, Dialog, FormHelperText, Input } from "@material-ui/core";
 import { useState } from "react";
 import styled from "styled-components";
 import { skillGroupMaker } from "../../Factories/skillGroupMaker";
@@ -22,7 +22,12 @@ export const NewSkillGroupModal = ({ dispatch, showModal }) => {
                 dispatch();
             }}
         >
-        <SkillGroupFormContainer> 
+        <SkillGroupFormContainer>
+            <Input onChange={({ target: { value } }) => setSkillGroupToCreate({
+                ...skillGroupToCreate,
+                name: value,
+            })} type="text" value={skillGroupToCreate.name} />
+            <FormHelperText>Name for the skill group</FormHelperText>
             <SkillGroupForm skillGroup={skillGroupToCreate} updateSkillGroup={setSkillGroupToCreate} />
             <Button onClick={addNewSkillGroup}>Add New Skill Group</Button>
         </SkillGroupFormContainer>

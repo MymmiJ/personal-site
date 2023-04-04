@@ -8,6 +8,7 @@ export const ADD_NEW_SKILL = 'add_new_skill';
 export const REMOVE_SKILL = 'remove_skill';
 export const REMOVE_SKILL_GROUP = 'remove_skill_group';
 export const ADD_NEW_SKILL_GROUP = 'add_new_skill_group';
+export const RENAME_SKILL_GROUP = 'rename_skill_group';
 export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 export const REPLACE_ALL_SKILL_GROUPS = 'replace_all_skill_groups';
 
@@ -116,6 +117,8 @@ export const skillGroupsReducer = (state, action) => {
                 },
                 ...state.slice(action.skillGroupIndex+1)
             ];
+        case RENAME_SKILL_GROUP:
+            return [...state.slice(0, action.index), { ...state[action.index], name: action.newName }, ...state.slice(action.index+1)];
         case REMOVE_SKILL_GROUP:
             return state.filter((_skillGroup, i) => i !== action.index);
         case ADD_NEW_SKILL_GROUP:
