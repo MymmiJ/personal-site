@@ -82,10 +82,10 @@ export const skillGroupsReducer = (state, action) => {
             return [
                 ...state.slice(0, action.skillGroupIndex),
                 {
+                    ...skillGroup,
                     skills: action.person.skills ?? skillGroup.skills.map(skill => ({ ...skill, degree: 0, degreeHistory: {} })),
                     people: [...skillGroup.people.slice(0, activePersonIndex), currentlyActivePerson, ...skillGroup.people.slice(activePersonIndex+1)],
                     activePerson: action.person,
-                    ...skillGroup,
                 },
                 ...state.slice(action.skillGroupIndex+1),
             ];
