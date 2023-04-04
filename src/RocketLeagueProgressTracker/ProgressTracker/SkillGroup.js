@@ -24,7 +24,6 @@ const BottomBorderTableBody = styled(TableBody)`
     border-bottom: solid 4px;
 `;
 
-// TODO: Add Fundamentals to the SkillGroup.
 export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals = [], index }) => {
     const [,dispatch] = useContext(SkillGroupsContext);
 
@@ -36,7 +35,7 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
     const spectrumPosition = index % SPECTRUM_BREADTH;
 
     const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
-    console.log(fundamentals)
+
     const tableBodyRef = useRef(null);
     return <BottomBorderTableBody style={{ backgroundColor: `rgba(${red},${green},${blue},0.04)` }} ref={tableBodyRef}>
         <TableRow>
@@ -50,8 +49,8 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
                         <Button variant="contained">{activePerson.name}</Button></> }
                     {
                         people.filter(person => activePerson.name !== person.name).map((person, i) =>
-                        <div style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
-                            <Button variant="outlined" key={i} onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>
+                        <div key={i} style={{ display: 'flex', flexDirection: 'column', marginTop: '20px' }}>
+                            <Button variant="outlined" onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>
                             <Button style={{ maxHeight: '20px' }} variant="text" key={`remove-${i}`} onClick={() => dispatch(replacePeopleAction(people.filter(
                                 existingPerson => existingPerson.name !== person.name
                             ), index))}>Remove</Button>
