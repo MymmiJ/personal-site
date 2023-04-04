@@ -13,6 +13,8 @@ import { updatePeopleAction } from "../Reducers/Actions/SkillGroupsActions/updat
 import { Skill } from "./Skill";
 import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
 import { renameSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/renameSkillGroupAction";
+import { NewFundamentalsModal } from "../Modals/AddItemModals/NewFundamentalsModal";
+import { replaceSkillGroupFundamentalsAction } from "../Reducers/Actions/SkillGroupsActions/replaceSkillGroupFundamentalsAction";
 
 // Number at which point we wrap to the start of the rainbow again
 const SPECTRUM_BREADTH = 10;
@@ -21,12 +23,14 @@ const BottomBorderTableBody = styled(TableBody)`
     border-bottom: solid 4px;
 `;
 
-export const SkillGroup = ({ skills, people, activePerson, name='', index }) => {
+// TODO: Add Fundamentals to the SkillGroup.
+export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals = [], index }) => {
     const [,dispatch] = useContext(SkillGroupsContext);
 
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const [showNewSkillModal, setShowNewSkillModal] = useState(false);
     const [showNewPeopleModal, setShowNewPeopleModal] = useState(false);
+    const [showNewFundamentalsModal, setShowNewFundamentalsModal] = useState(false);
     
     const spectrumPosition = index % SPECTRUM_BREADTH;
 
@@ -37,29 +41,42 @@ export const SkillGroup = ({ skills, people, activePerson, name='', index }) => 
         <TableRow>
             <TableCell>
                 <Input onChange={({ target: { value } }) => dispatch(renameSkillGroupAction(index, value))} type="text" value={name} />
-                <FormHelperText>Name for the skill group</FormHelperText>
+                <FormHelperText>Skill group name</FormHelperText>
             </TableCell>
-            <TableCell><strong>Person -</strong></TableCell>
             <TableCell colSpan="2">
-                <strong>{activePerson.name}</strong>
+                { activePerson.name && <><strong>Selected Person: </strong>
+                <Button variant="contained">{activePerson.name}</Button></> }
                 {
                     people.filter(person => activePerson.name !== person.name).map((person, i) =>
-                        <Button key={i} onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>)
+                        <Button variant="outlined" key={i} onClick={() => dispatch(switchPersonAction(person, index))}><em>{person.name}</em></Button>)
                 }
+                <Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button>
+                <NewPeopleModal
+                    dispatch={(newPeople) => {
+                        if(newPeople) {
+                            const validPeople = newPeople
+                                .filter(person => !people.find(skillGroupPerson => skillGroupPerson.name === person.name))
+                            dispatch(updatePeopleAction(validPeople, index));
+                        }
+                        setShowNewPeopleModal(false);
+                    }}
+                    showModal={showNewPeopleModal}
+                />
             </TableCell>
-
-            <TableCell><Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button></TableCell>
-            <NewPeopleModal
-                dispatch={(newPeople) => {
-                    if(newPeople) {
-                        const validPeople = newPeople
-                            .filter(person => !people.find(skillGroupPerson => skillGroupPerson.name === person.name))
-                        dispatch(updatePeopleAction(validPeople, index));
-                    }
-                    setShowNewPeopleModal(false);
-                }}
-                showModal={showNewPeopleModal}
-            />
+            <TableCell>
+                <div style={{display: 'flex', alignItems: 'center'}}>
+                    <small>
+                        Fundamentals:&nbsp;
+                        {fundamentals.join(', ').replace(/, $/, '')}
+                    </small>
+                    <Button onClick={() => setShowNewFundamentalsModal(true)}>+</Button>
+                    <NewFundamentalsModal
+                        dispatch={(newFundamentals) => dispatch(replaceSkillGroupFundamentalsAction(index, [...fundamentals, ...newFundamentals]))}
+                        existingFundamentals={fundamentals}
+                        closeModal={() => setShowNewFundamentalsModal(false)}
+                        showModal={showNewFundamentalsModal}/>
+                </div>
+            </TableCell>
         </TableRow>
         {skills.map((skill, i) => <Skill key={i} {...skill} activePerson={activePerson} index={i} skillGroupIndex={index} />)}
         <TableRow>
