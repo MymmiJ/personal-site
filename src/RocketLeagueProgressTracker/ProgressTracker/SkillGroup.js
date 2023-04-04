@@ -89,7 +89,7 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
         <TableRow>
             <TableCell colSpan="2"><Button onClick={() => setShowNewSkillModal(true)}>Add New Skill</Button></TableCell>
             <TableCell><Button onClick={() => setShowNewSkillGroupModal(true)}>Insert New Skill Group Below</Button></TableCell>
-            <TableCell><Button onClick={() => dispatch(removeSkillGroupAction(index))}>{`Remove Skill Group ${index + 1}`}</Button></TableCell>
+            <TableCell><Button onClick={() => dispatch(removeSkillGroupAction(index))}>{`Remove ${ name.length > 0 ? name : `Skill Group ${index + 1}`}`}</Button></TableCell>
         </TableRow>
         <NewSkillModal
             dispatch={(payload) => {
