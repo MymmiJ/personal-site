@@ -11,17 +11,17 @@ const DribblingChallengeLevelMeasurement = measurementMaker(
     ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER
 );
 
-const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(
-        DribblingChallengeLevelMeasurement,
-        [measurementMaker(
-            'Dribbling Challenge 2 Time',
-            0,
-            ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME                
-        ), DribblingChallengeLevelMeasurement]
-    ),
-    20,
-    tooltipMaker('General Ground Control Skills'),
-);
+// const DRIBBLING_DEMO_SKILL = skillMaker('Dribbling', measurementsMaker(
+//         DribblingChallengeLevelMeasurement,
+//         [measurementMaker(
+//             'Dribbling Challenge 2 Time',
+//             0,
+//             ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME                
+//         ), DribblingChallengeLevelMeasurement]
+//     ),
+//     20,
+//     tooltipMaker('General Ground Control Skills'),
+// );
 
 export const DEFAULT_SKILL_GROUPS_STATE =  [
     skillGroupMaker(
