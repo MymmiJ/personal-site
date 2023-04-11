@@ -37,7 +37,10 @@ export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowA
             return measurements;
         }
         const newSelectedMeasurement = measurement.name === measurements.name ?
-            measurements.measurements.find(replacementMeasurement => replacementMeasurement.name !== measurement.name) :
+            {
+                ...measurements,
+                ...measurements.measurements.find(replacementMeasurement => replacementMeasurement.name !== measurement.name)
+            } :
             measurements;
         updateMeasurements({
             ...newSelectedMeasurement,
