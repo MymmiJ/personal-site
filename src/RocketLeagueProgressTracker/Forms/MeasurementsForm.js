@@ -33,6 +33,9 @@ export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowA
     }
 
     const removeMeasurement = (measurement) => {
+        if(measurements.measurements.length <= 1) {
+            return measurements;
+        }
         const newSelectedMeasurement = measurement.name === measurements.name ?
             measurements.measurements.find(replacementMeasurement => replacementMeasurement.name !== measurement.name) :
             measurements;
