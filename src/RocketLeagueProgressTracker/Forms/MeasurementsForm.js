@@ -32,6 +32,17 @@ export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowA
         }
     }
 
+    const removeMeasurement = (measurement) => {
+        const newSelectedMeasurement = measurement.name === measurements.name ?
+            measurements.measurements.find(replacementMeasurement => replacementMeasurement.name !== measurement.name) :
+            measurements;
+        updateMeasurements({
+            ...newSelectedMeasurement,
+            measurements: measurements.measurements.filter(each => each.name !== measurement.name)
+        });
+        setMeasurementFilterList(measurementFilterList.filter(name => name !== measurement.name));
+    }
+
     const filteredGlobalMeasurements = globalMeasurements.filter((measurement) => !measurementFilterList.includes(measurement.name));
 
     return <div style={{
@@ -45,6 +56,7 @@ export const MeasurementsForm = ({ measurements, updateMeasurements, alwaysShowA
             <div key={i} style={{ display: "flex", alignItems: "center" }}>
                 <Typography key={`typography-${i}`}>{measurement.name} // Type: {measurement.display}</Typography>
                 <Checkbox key={`checkbox-${i}`} onClick={() => updateMeasurements(measurements.selectMeasurement(measurement.name))} checked={measurement.name === measurements.name} />
+                <Button onClick={() => removeMeasurement(measurement)} variant='outlined'>X</Button>
             </div>)}
         { !alwaysShowAddingOptions && <div>
             <Button onClick={() => {

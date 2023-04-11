@@ -56,7 +56,7 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
                             ), index))}>Remove</Button>
                         </div>)
                     }
-                    <Button onClick={() => setShowNewPeopleModal(true)}>Add New People</Button>
+                    <Button onClick={() => setShowNewPeopleModal(true)}>+</Button>
                 </div>
                 <NewPeopleModal
                     dispatch={(newPeople) => {

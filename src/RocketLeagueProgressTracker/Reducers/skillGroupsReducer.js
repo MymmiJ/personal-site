@@ -13,6 +13,7 @@ export const REPLACE_SKILL_GROUP_FUNDAMENTALS = 'replace_skill_group_fundamental
 export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 export const REPLACE_ALL_SKILL_GROUPS = 'replace_all_skill_groups';
 
+// TODO: Rewrite to use specific actionHandlers
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
         case UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY:

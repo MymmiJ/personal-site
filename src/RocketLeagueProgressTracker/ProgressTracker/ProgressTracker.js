@@ -1,5 +1,5 @@
 import { Button, ButtonGroup, Card, Grid, Table, TableBody, TableCell, TableRow } from "@material-ui/core";
-import { useContext, useRef, useState } from "react";
+import { useCallback, useContext, useEffect, useRef, useState } from "react";
 import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
 import { TableRefContext } from "../ContextProviders/TableRefContext";
 import { NewSkillGroupModal } from "../Modals/AddItemModals/NewSkillGroupModal";
@@ -28,26 +28,29 @@ export const ProgressTracker = () => {
         globalPeople,
     };
 
-    const loadData = (data) => {
+    // TODO: Debug - skill history elements being added to inactive persons on load
+    const loadData = useCallback((data) => {
         dispatch(replaceAllSkillGroupsAction(data.skillGroups));
         dispatchGlobalMeasurements(replaceAllGlobalMeasurementsAction(data.globalMeasurements));
         dispatchGlobalPeople(replaceAllGlobalPeopleAction(data.globalPeople));
-    };
+    }, [dispatch, dispatchGlobalMeasurements, dispatchGlobalPeople]);
 
     const importableData = (new URL(window.location)).searchParams.get('import-data');
-    if(importableData) {
-        try {
-            const fromB64 = decodeURIComponent(atob(importableData));
-            const deserializedData = JSON.parse(fromB64);
-            loadData(deserializedData);
-        } catch(e) {
-            console.error(e);
-        } finally {
-            const href = window.location.href;
-            const newUrl = href.split('?')[0];
-            window.history.pushState({}, null, newUrl);
+    useEffect(() => {
+        if(importableData) {
+            try {
+                const fromB64 = decodeURIComponent(atob(importableData));
+                const deserializedData = JSON.parse(fromB64);
+                loadData(deserializedData);
+            } catch(e) {
+                console.error(e);
+            } finally {
+                const href = window.location.href;
+                const newUrl = href.split('?')[0];
+                window.history.pushState({}, null, newUrl);
+            }
         }
-    }
+    }, [importableData, loadData]);
 
     return <>
         <Grid container direction="row-reverse">

@@ -56,7 +56,7 @@ export const Skill = ({ name, degree, degreeHistory, measurements, tooltip, fund
                         ));
                     }
                 } />
-                <Button onClick={() => setShowNewMeasurementsModal(true) }>Add Measurement Types</Button>
+                <Button onClick={() => setShowNewMeasurementsModal(true) }>+</Button>
                 <NewMeasurementsModal showModal={showNewMeasurementsModal} dispatch={
                     (newMeasurements) => {
                         if(newMeasurements) {
