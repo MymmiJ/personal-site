@@ -28,7 +28,7 @@ export const ProgressTracker = () => {
         globalPeople,
     };
 
-    // TODO: Debug - skill history elements being added to inactive persons on load
+
     const loadData = useCallback((data) => {
         dispatch(replaceAllSkillGroupsAction(data.skillGroups));
         dispatchGlobalMeasurements(replaceAllGlobalMeasurementsAction(data.globalMeasurements));

@@ -1,4 +1,4 @@
-import { UPDATE_PERSON_SKILL_DEGREE_HISTORY } from "../../skillGroupsReducer";
+import { UPDATE_PERSON_SKILL_DEGREE_HISTORY } from "../../../skillGroupsReducer";
 
 export const updatePersonSkillDegreeHistory = (
     skillGroupIndex,

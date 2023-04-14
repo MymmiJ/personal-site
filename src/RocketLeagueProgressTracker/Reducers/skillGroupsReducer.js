@@ -1,7 +1,13 @@
+import { removeActivePersonSkillDegreeHistoryActionHandler } from "./ActionHandlers/SkillGroupActionHandlers/removeActivePersonSkillDegreeHistoryActionHandler";
+import { switchPersonActionHandler } from "./ActionHandlers/SkillGroupActionHandlers/switchPersonActionHandler";
+import { updateActivePersonSkillDegreeHistoryActionHandler } from "./ActionHandlers/SkillGroupActionHandlers/updateActivePersonSkillDegreeHistoryActionHandler";
+
 export const UPDATE_PEOPLE = 'update_people';
 export const REPLACE_PEOPLE = 'replace_people';
 export const UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY = 'update_active_person_skill_degree_history';
+export const REMOVE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY = 'remove_active_person_skill_degree_history';
 export const UPDATE_PERSON_SKILL_DEGREE_HISTORY = 'update_person_skill_degree_history';
+export const REMOVE_PERSON_SKILL_DEGREE_HISTORY = 'remove_active_person_skill_degree_history';
 export const SWITCH_PERSON = 'switch_person';
 export const UPDATE_SKILL = 'update_skill';
 export const ADD_NEW_SKILL = 'add_new_skill';
@@ -13,48 +19,12 @@ export const REPLACE_SKILL_GROUP_FUNDAMENTALS = 'replace_skill_group_fundamental
 export const INSERT_NEW_SKILL_GROUP = 'insert_new_skill_group';
 export const REPLACE_ALL_SKILL_GROUPS = 'replace_all_skill_groups';
 
-// TODO: Rewrite to use specific actionHandlers
 export const skillGroupsReducer = (state, action) => {
     switch(action?.type) {
+        case REMOVE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY:
+            return removeActivePersonSkillDegreeHistoryActionHandler(action, state);
         case UPDATE_ACTIVE_PERSON_SKILL_DEGREE_HISTORY:
-            const activePersonSkillGroupToUpdate = state[action.skillGroupIndex];
-            const activePersonToUpdate = activePersonSkillGroupToUpdate.activePerson;
-            const activePersonSkillToUpdate = activePersonSkillGroupToUpdate.skills[action.skillIndex];
-            const activePersonDegreeHistoryToUpdate = activePersonSkillToUpdate.degreeHistory?.[action.measurementName];
-
-            const newSkills = [
-                ...activePersonSkillGroupToUpdate.skills.slice(0, action.skillIndex),
-                {
-                    ...activePersonSkillToUpdate,
-                    degreeHistory: {
-                        ...activePersonSkillToUpdate.degreeHistory,
-                        [action.measurementName]: [
-                            ...activePersonDegreeHistoryToUpdate.slice(0, action.degreeIndex),
-                            {
-                                degree: action.newDegreeValue,
-                                date: action.newDegreeDate,
-                            },
-                            ...activePersonDegreeHistoryToUpdate.slice(action.degreeIndex+1),
-                        ].sort((a, b) => a.date - b.date),
-                    }
-                },
-                ...activePersonSkillGroupToUpdate.skills.slice(action.skillIndex+1),
-            ];
-            const updatedActivePerson = {
-                ...activePersonToUpdate,
-                skills: newSkills,
-            };
-            return [
-                ...state.slice(0, action.skillGroupIndex),
-                {
-                    ...activePersonSkillGroupToUpdate,
-                    skills: newSkills,
-                    activePerson: {
-                        ...updatedActivePerson,
-                    }
-                },
-                ...state.slice(action.skillGroupIndex+1),
-            ];
+            return updateActivePersonSkillDegreeHistoryActionHandler(action, state);
         case REPLACE_PEOPLE:
             return [
                 ...state.slice(0, action.skillGroupIndex),
@@ -75,21 +45,7 @@ export const skillGroupsReducer = (state, action) => {
                 ...state.slice(action.skillGroupIndex+1),
             ];
         case SWITCH_PERSON:
-            const skillGroup = state[action.skillGroupIndex];
-            const currentlyActivePerson = skillGroup.activePerson;
-            currentlyActivePerson.skills = skillGroup.skills.map(skill => ({ ...skill }));
-            
-            const activePersonIndex = skillGroup.people.findIndex(person => person.name === currentlyActivePerson.name);
-            return [
-                ...state.slice(0, action.skillGroupIndex),
-                {
-                    ...skillGroup,
-                    skills: action.person.skills ?? skillGroup.skills.map(skill => ({ ...skill, degree: 0, degreeHistory: {} })),
-                    people: [...skillGroup.people.slice(0, activePersonIndex), currentlyActivePerson, ...skillGroup.people.slice(activePersonIndex+1)],
-                    activePerson: action.person,
-                },
-                ...state.slice(action.skillGroupIndex+1),
-            ];
+            return switchPersonActionHandler(action, state);
         case UPDATE_SKILL:
             const skills = state[action.skillGroupIndex].skills;
             const updatedSkill = skills[action.index];

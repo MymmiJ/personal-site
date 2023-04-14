@@ -1,9 +1,10 @@
-import { Table, TableRow, TableCell, TableHead, TableBody, Input } from "@material-ui/core";
+import { Table, TableRow, TableCell, TableHead, TableBody, Input, Button } from "@material-ui/core";
 import { useContext, useState } from "react";
 import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
-import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/updateActivePersonSkillDegreeAction";
+import { updateActivePersonSkillDegreeHistory } from "../../Reducers/Actions/SkillGroupsActions/SkillDegreeHistoryActions/updateActivePersonSkillDegreeAction";
 import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeopleProvider";
 import { getInputComponentFromMeasurements } from "../Skill";
+import { removeActivePersonSkillDegreeHistoryAction } from "../../Reducers/Actions/SkillGroupsActions/SkillDegreeHistoryActions/removeActivePersonSkillDegreeHistoryAction";
 
 // TODO: We've written everything twice here, when we have some time we should deduplicate and abstract.
 // TODO: Allow removing entries from degreeHistory
@@ -107,6 +108,42 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                             skillGroupIndex,
                         );
                     }
+                },
+                onRemove: () => {
+                    if(personName === skillGroups[skillGroupIndex].activePerson.name) {
+                        dispatch(
+                            removeActivePersonSkillDegreeHistoryAction(
+                                skillGroupIndex,
+                                skillIndex,
+                                measurementName,
+                                j,
+                            )
+                        );
+                    } else {
+                        // updatePeople
+                        const personIndex = currentPeople.findIndex((person) => personName === person.name);
+                        const currentPerson = currentPeople[personIndex];
+                        const currentPersonSkills = currentPerson.skills;
+                        const currentPersonSkill = currentPersonSkills[skillIndex];
+                        const currentPersonDegreeHistory = currentPersonSkill.degreeHistory;
+                        const currentPersonDegreeHistoryMeasurement = currentPersonDegreeHistory[measurementName];
+                        dispatchPeopleToSkillGroup(
+                            [...currentPeople.slice(0, personIndex),
+                            {
+                                ...currentPerson,
+                                skills: [...currentPersonSkills.slice(0,skillIndex), { ...currentPersonSkill,
+                                    degreeHistory: {
+                                        ...currentPersonDegreeHistory,
+                                        [measurementName]: currentPersonDegreeHistoryMeasurement
+                                            .filter((_, i) => i !== j)
+                                    }
+                                }, ...currentPersonSkills.slice(skillIndex+1)]
+                            },
+                            ...currentPeople.slice(personIndex+1)
+                            ],
+                            skillGroupIndex,
+                        );
+                    }
                 }
             };
         });
@@ -137,7 +174,7 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                                 .map((maybeCell, j) => {
                                     if(!maybeCell) return <TableCell key={j} />;
 
-                                    const { dataPoint, onChange, onChangeDate, InputComponent } = maybeCell;
+                                    const { dataPoint, onChange, onChangeDate, onRemove, InputComponent } = maybeCell;
                                     return <TableCell key={j}>
                                         Degree of Skill:&nbsp;
                                         <InputComponent onChange={onChange} degree={dataPoint.y} />
@@ -148,6 +185,8 @@ export const SkillDetailTable = ({ display, data, skillIndex, skillGroupIndex })
                                             value={(new Date(dataPoint.x)).toISOString().replace(/Z$/,'')}
                                             onChange={onChangeDate}
                                         />
+                                        <br />
+                                        <Button  onClick={onRemove}>Remove</Button>
                                     </TableCell>;   
                                 })
                         }
