@@ -63,10 +63,6 @@ export const skillGroupsReducer = (state, action) => {
                 ...state.slice(0, action.skillGroupIndex),
                 {
                     ...state[action.skillGroupIndex],
-                    people: state[action.skillGroupIndex].people.map(person => ({
-                        ...person,
-                        skills: [...(person.skills ?? []), action.newSkill]
-                    })),
                     skills: [...state[action.skillGroupIndex].skills, action.newSkill],
                 },
                 ...state.slice(action.skillGroupIndex+1),
@@ -76,10 +72,6 @@ export const skillGroupsReducer = (state, action) => {
                 ...state.slice(0, action.skillGroupIndex),
                 {
                     ...state[action.skillGroupIndex],
-                    people: state[action.skillGroupIndex].people.map(person => ({
-                        ...person,
-                        skills: state[action.skillGroupIndex].skills.filter((_skill, i) => i !== action.index)
-                    })),
                     skills: state[action.skillGroupIndex].skills.filter((_skill, i) => i !== action.index),
                 },
                 ...state.slice(action.skillGroupIndex+1)
