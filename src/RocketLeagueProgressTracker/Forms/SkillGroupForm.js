@@ -5,6 +5,7 @@ import { SkillsForm } from "./SkillsForm";
 export const SkillGroupForm = ({ skillGroup, updateSkillGroup }) => {
     const updatePeople = (people) => updateSkillGroup({
         ...skillGroup,
+        activePerson: skillGroup.activePerson ? skillGroup.activePerson : people[0],
         people,
     });
     const updateSkills = (skills) => updateSkillGroup({
