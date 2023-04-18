@@ -1,0 +1,1 @@
+export const SPECTRUM_BREADTH = 12;

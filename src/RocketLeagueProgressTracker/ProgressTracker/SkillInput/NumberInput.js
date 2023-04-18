@@ -1,16 +1,16 @@
 import { FormControl, Input, InputLabel } from "@material-ui/core";
 import { Label } from "@material-ui/icons";
 
-export const NumberInput = ({ degree, onChange, onKeyUp = () => {} }) => {
+export const NumberInput = ({ degree, onChange, onKeyUp = () => {}, isNewInput = false }) => {
     return <FormControl>
-        <InputLabel htmlFor={`number-input-${degree}`}><Label/></InputLabel>
+        { isNewInput ? <InputLabel htmlFor={`number-input-${degree}`}><Label/></InputLabel> : false }
         <Input
             id={`number-input-${degree}`}
             style={{
                 maxWidth: '128px',
                 marginRight: '4px',
                 marginLeft: '4px',
-                ...(!!degree ? {
+                ...(!!degree && isNewInput ? {
                     backgroundImage: `linear-gradient(
                         45deg, 
                         rgba(0,0,0,0.5) 25%, 

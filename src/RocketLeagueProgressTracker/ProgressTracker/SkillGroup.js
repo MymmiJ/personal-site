@@ -16,6 +16,7 @@ import { renameSkillGroupAction } from "../Reducers/Actions/SkillGroupsActions/r
 import { NewFundamentalsModal } from "../Modals/AddItemModals/NewFundamentalsModal";
 import { replaceSkillGroupFundamentalsAction } from "../Reducers/Actions/SkillGroupsActions/replaceSkillGroupFundamentalsAction";
 import { replacePeopleAction } from "../Reducers/Actions/SkillGroupsActions/replacePeopleAction";
+import { SkillGroupDetail } from "./DetailDisplays/SkillGroupDetail";
 
 // Number at which point we wrap to the start of the rainbow again
 const SPECTRUM_BREADTH = 10;
@@ -31,6 +32,7 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
     const [showNewSkillModal, setShowNewSkillModal] = useState(false);
     const [showNewPeopleModal, setShowNewPeopleModal] = useState(false);
     const [showNewFundamentalsModal, setShowNewFundamentalsModal] = useState(false);
+    const [showSkillGroupDetails, setShowSkillGroupDetails] = useState(false);
     
     const spectrumPosition = index % SPECTRUM_BREADTH;
 
@@ -88,9 +90,20 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
         {skills.map((skill, i) => <Skill key={i} {...skill} activePerson={activePerson} index={i} skillGroupIndex={index} />)}
         <TableRow>
             <TableCell colSpan="2"><Button onClick={() => setShowNewSkillModal(true)}>Add New Skill</Button></TableCell>
+            <TableCell><Button onClick={() => setShowSkillGroupDetails(!showSkillGroupDetails)}>{`${showSkillGroupDetails ? 'Hide' : 'Show' } Skill Group Charts`}</Button></TableCell>
             <TableCell><Button onClick={() => setShowNewSkillGroupModal(true)}>Insert New Skill Group Below</Button></TableCell>
             <TableCell><Button onClick={() => dispatch(removeSkillGroupAction(index))}>{`Remove ${ name.length > 0 ? name : `Skill Group ${index + 1}`}`}</Button></TableCell>
         </TableRow>
+        {
+            showSkillGroupDetails ?
+            <SkillGroupDetail
+                title={name}
+                skillGroupIndex={index}
+                activePersonName={activePerson.name}
+                skills={skills}
+            /> :
+            null
+        }
         <NewSkillModal
             dispatch={(payload) => {
                 setShowNewSkillModal(false);

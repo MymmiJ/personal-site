@@ -13,7 +13,7 @@ export const updateActivePersonSkillDegreeHistoryActionHandler = (action, state)
                 [action.measurementName]: [
                     ...activePersonDegreeHistoryToUpdate.slice(0, action.degreeIndex),
                     {
-                        degree: action.newDegreeValue,
+                        degree: Number(action.newDegreeValue),
                         date: action.newDegreeDate,
                     },
                     ...activePersonDegreeHistoryToUpdate.slice(action.degreeIndex+1),

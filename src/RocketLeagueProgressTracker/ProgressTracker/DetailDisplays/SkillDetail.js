@@ -13,13 +13,15 @@ import {
 } from 'chart.js';
 import 'chartjs-adapter-luxon';
 import { useContext, useEffect, useState } from "react";
-import { TableRefContext } from "../ContextProviders/TableRefContext";
-import { LineChart } from "./SkillDetailDisplays/LineChart";
-import { SkillDetailTable } from "./SkillDetailDisplays/SkillDetailTable";
-import { SkillGroupsPeopleContext } from "../ContextProviders/SkillGroupsPeopleProvider";
-import { getColorFromSpectrumPosition } from "./Utilities/getColorFromSpectrumPosition";
-import { SkillGroupsContext } from "../ContextProviders/SkillGroupsContextProvider";
-import { ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS } from "../Factories/measurementsMaker";
+import { TableRefContext } from "../../ContextProviders/TableRefContext";
+import { LineChart } from "../SkillDetailDisplays/LineChart";
+import { SkillDetailTable } from "../SkillDetailDisplays/SkillDetailTable";
+import { SkillGroupsPeopleContext } from "../../ContextProviders/SkillGroupsPeopleProvider";
+import { getColorFromSpectrumPosition } from "../Utilities/getColorFromSpectrumPosition";
+import { SkillGroupsContext } from "../../ContextProviders/SkillGroupsContextProvider";
+import { getMeasurementTypeYAxisFromSkillGroup } from "./yAxis";
+import { SPECTRUM_BREADTH } from "./constants";
+import { getTimescales } from "./timescales";
 
 ChartJS.register(
     CategoryScale,
@@ -33,31 +35,12 @@ ChartJS.register(
     Legend
 );
 
-const SPECTRUM_BREADTH = 12;
-
-const getYAxisFromMeasurementName = (measurements) => {
-    switch(measurements.display) {
-        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.NUMBER:
-            return 'y';
-        case ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS.TIME:
-            return 'yTime';
-        default:
-            return 'y';
-    }
-}
-
 export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonName, skillDegreeHistory = [], }) => {
     const tableContainerRef = useContext(TableRefContext);
     const [skillGroups,] = useContext(SkillGroupsContext);
     const [getPeopleFromSkillGroup,] = useContext(SkillGroupsPeopleContext);
     const [xAxisDisplayTime, setXAxisDisplayTime] = useState(true);
     const theme = useTheme().palette.type;
-
-    const getMeasurementTypeYAxisFromSkillGroup = (skillGroup, measurementName) => {
-        const measurements =  skillGroups[skillGroupIndex].skills[skillIndex].measurements.measurements;
-        const measurement = measurements.find(measurement => measurement.name === measurementName) ?? {};
-        return getYAxisFromMeasurementName(measurement);
-    };
 
     const localPeople = getPeopleFromSkillGroup(skillGroupIndex)
         .filter(
@@ -92,7 +75,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
             const spectrumPosition = i % SPECTRUM_BREADTH;
             const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
             currentSkillDegreeCount = i + 1;
-            const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], measurementName);
+            const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], skillIndex, measurementName);
             return ({
                 label: `${activePersonName} - ${measurementName}`,
                 data: degreeHistoryMeasurement.map(({ degree, date }) => ({
@@ -114,7 +97,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                 const spectrumPosition = i + skillDegreeCountOffset % SPECTRUM_BREADTH;
                 const { red, green, blue } = getColorFromSpectrumPosition(spectrumPosition/SPECTRUM_BREADTH);
                 currentSkillDegreeCount = i + skillDegreeCountOffset + 1;
-                const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], measurementName);
+                const yAxisID = getMeasurementTypeYAxisFromSkillGroup(skillGroups[skillGroupIndex], skillIndex, measurementName);
                 return ({
                     label: `${selectedPersonSkillDegreeHistory.name} - ${measurementName}`,
                     data: degreeHistoryMeasurement.map(({ degree, date }) => ({
@@ -130,12 +113,10 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
         }).flat()
     ];
 
-    const timescales = skillProgressions
-        .map(dataset => dataset.data.map(({ x }, i) => xAxisDisplayTime ? x : i+1));
-    const flattenedTimescales = timescales.flat().sort().filter((item, pos, array) => !pos || item !== array[pos - 1]);
+    const timescales = getTimescales(skillProgressions, xAxisDisplayTime)
 
     const data = {
-        labels: flattenedTimescales,
+        labels: timescales,
         datasets: skillProgressions,
     };
 
@@ -146,11 +127,11 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                     display: "flex"
                 }}>
                     <ButtonGroup style={{ margin: '16px' }}>
-                        <Button variant={ display === 'table' ? 'contained' : 'outlined' } onClick={() => {
+                        <Button variant={ display === 'table' ? 'contained' : 'outlined' } style={{ maxHeight: '40px' }}  onClick={() => {
                             setDisplay('table');
                             setXAxisDisplayTime(true);
                         }}>Table</Button>
-                        <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } onClick={() => setDisplay('line_chart')}>Line Chart</Button>
+                        <Button variant={ display === 'line_chart' ? 'contained' : 'outlined' } style={{ maxHeight: '40px' }}  onClick={() => setDisplay('line_chart')}>Line Chart</Button>
                     </ButtonGroup>
                     
                     {
@@ -169,6 +150,7 @@ export const SkillDetail = ({ title, skillIndex, skillGroupIndex, activePersonNa
                                     <Button
                                         key={i}
                                         variant={ selectedLocalPeopleNames.includes(person.name) ? 'contained' : 'outlined' }
+                                        style={{ maxHeight: '40px' }}
                                         onClick={ () => toggleLocalPersonPresence(person.name)}
                                     >
                                         {person.name}

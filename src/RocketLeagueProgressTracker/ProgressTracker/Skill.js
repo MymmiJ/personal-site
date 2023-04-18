@@ -5,7 +5,7 @@ import { NewMeasurementsModal } from "../Modals/AddItemModals/NewMeasurementsMod
 import { removeSkillAction } from "../Reducers/Actions/SkillGroupsActions/removeSkillAction";
 import { updateSkillAction } from "../Reducers/Actions/SkillGroupsActions/updateSkillAction";
 import { Measurement } from "./Measurement";
-import { SkillDetail } from "./SkillDetail";
+import { SkillDetail } from "./DetailDisplays/SkillDetail";
 import { NumberInput } from "./SkillInput/NumberInput";
 import { ROCKET_LEAGUE_MEASUREMENT_DISPLAY_OPTIONS } from "../Factories/measurementsMaker";
 import { TimeInput } from "./SkillInput/TimeInput";

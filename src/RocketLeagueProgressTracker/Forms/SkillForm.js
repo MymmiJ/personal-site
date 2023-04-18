@@ -19,6 +19,7 @@ export const SkillForm = ({ skill, updateSkill }) => {
         <InputComponent
             degree={ skill.degree }
             onChange={ (degree) => updateSkill({ ...skill, degree }) }
+            isNewInput={true}
         />
         <MeasurementsForm
             measurements={skill.measurements}
