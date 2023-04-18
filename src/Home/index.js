@@ -22,6 +22,10 @@ const Home = () => {
           ]}/>
         ]}/>
         <DefinitionList header="Novelties" entries={[
+            <Typography><Link href="https://jimmymacgregor.com/RocketLeagueProgressTracker">Rocket League Progress Tracker</Link></Typography>,
+            <Card maxWidth="480px" width="480px" style={{ maxWidth: '480px', padding: '1em 40px' }}>
+              <Typography>A progress tracker for the video game 'Rocket League' using ChartJS.</Typography>
+            </Card>,
             <Typography><Link href="https://antethesizer.jimmymacgregor.com/">Antethesizer</Link> [<Link href="https://github.com/MymmiJ/antethesizer">GitHub</Link>]</Typography>,
             <Box display="inline-block">
               <Card maxWidth="480px" width="480px">
