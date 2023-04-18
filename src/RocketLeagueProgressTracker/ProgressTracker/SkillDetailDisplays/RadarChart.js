@@ -22,5 +22,5 @@ export const RadarChart = ({ display, targetWidth, title, data }) => {
             }
         },
     };
-    return <>{ display === 'radar_chart' && <Radar style={{ width: `${targetWidth}px` }} options={options} data={data} width={targetWidth} height={600} /> }</>;
+    return <>{ display === 'radar_chart' && <Radar style={{ width: `${Math.floor(targetWidth / 2)}px`,  maxWidth: `${Math.floor(targetWidth / 2)}px`, height: '600px', maxHeight: '600px' }} options={options} data={data} width={Math.floor(targetWidth / 2)} height={600} /> }</>;
 }
