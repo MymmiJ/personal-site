@@ -28,6 +28,7 @@ const BottomBorderTableBody = styled(TableBody)`
 export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals = [], index }) => {
     const [,dispatch] = useContext(SkillGroupsContext);
 
+    const [showSkills, setShowSkills] = useState(true);
     const [showNewSkillGroupModal, setShowNewSkillGroupModal] = useState(false);
     const [showNewSkillModal, setShowNewSkillModal] = useState(false);
     const [showNewPeopleModal, setShowNewPeopleModal] = useState(false);
@@ -86,8 +87,11 @@ export const SkillGroup = ({ skills, people, activePerson, name='', fundamentals
                         showModal={showNewFundamentalsModal}/>
                 </div>
             </TableCell>
+            <TableCell>
+                <Button onClick={() => setShowSkills(!showSkills)}>{showSkills ? 'Hide' : 'Show'} Skills</Button>
+            </TableCell>
         </TableRow>
-        {skills.map((skill, i) => <Skill key={i} {...skill} activePerson={activePerson} index={i} skillGroupIndex={index} />)}
+        { showSkills ? skills.map((skill, i) => <Skill key={i} {...skill} activePerson={activePerson} index={i} skillGroupIndex={index} />) : null}
         <TableRow>
             <TableCell colSpan="2"><Button onClick={() => setShowNewSkillModal(true)}>Add New Skill</Button></TableCell>
             <TableCell><Button onClick={() => setShowSkillGroupDetails(!showSkillGroupDetails)}>{`${showSkillGroupDetails ? 'Hide' : 'Show' } Skill Group Charts`}</Button></TableCell>
