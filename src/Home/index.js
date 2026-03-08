@@ -71,7 +71,6 @@ const Home = () => {
         ]}/>
         <DefinitionList header="Older Projects (Pre-2014)" entries={[
           <Link href="/Old/FourButton">Four-button writing in English</Link>,
-          "Unfinished pixel-art navigation [To Be Added]",
           <Link href="/Old/Clawrite">Simple 'Clawrite' Example</Link>,
           <Link href="https://www.kongregate.com/games/Jaywalker2/hard-beans">Flash Game 'Hard Beans'</Link>
         ]}/>
