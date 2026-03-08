@@ -14,6 +14,10 @@ const Home = () => {
           ]} />
         ]}/>
         <DefinitionList header="Novelties" entries={[
+            <Typography><Link href="https://controller-layout.jimmymacgregor.com/rocket-league/xbox/regular">Controller Layout Optimizer</Link></Typography>,
+            <Card maxWidth="480px" width="480px" style={{ maxWidth: '480px', padding: '1em 40px' }}>
+              <Typography>A tool to help players optimize their controller layout. Uses constraints related to mechanics, hand positioning, and button accessibility, with React/Drei and React/Three-fiber to render the 3D model.</Typography>
+            </Card>,
             <Typography><Link href="/RocketLeagueProgressTracker">Rocket League Progress Tracker</Link></Typography>,
             <Card maxWidth="480px" width="480px" style={{ maxWidth: '480px', padding: '1em 40px' }}>
               <Typography>A progress tracker for the video game 'Rocket League' using ChartJS.</Typography>
