@@ -96,7 +96,7 @@ const Home = () => {
         <DefinitionList header="Technologies I Love" entries={[
           <Link href="https://github.com/dubzzz/fast-check">Property Testing</Link>,
           <Link href="https://github.com/bitnami-labs/sealed-secrets">Sealed Secrets</Link>,
-          <Link href="https://unity.com/">Unity</Link>,
+          <Link href="https://godotengine.org/">Godot</Link>,
           <Link href="https://www.blender.org/">Blender</Link>,
           <Link href="https://scikit-learn.org/stable/modules/generated/sklearn.ensemble.RandomForestClassifier.html">Random Forests</Link>,
           <Link href="https://www.tensorflow.org/tutorials/images/transfer_learning">Transfer Learning</Link>,
